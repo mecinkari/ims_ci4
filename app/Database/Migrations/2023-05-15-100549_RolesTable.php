@@ -25,6 +25,6 @@ class RolesTable extends Migration
     {
         //
         $tbl = new Fields('roles');
-        $this->forge->dropTable($tbl->get_tbl_name());
+        $this->forge->dropTable($tbl->get_tbl_name(), true);
     }
 }

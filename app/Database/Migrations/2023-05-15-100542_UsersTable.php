@@ -32,6 +32,6 @@ class UsersTable extends Migration
     {
         //
         $tbl = new Fields('users');
-        $this->forge->dropTable($tbl->get_tbl_name());
+        $this->forge->dropTable($tbl->get_tbl_name(), true);
     }
 }
