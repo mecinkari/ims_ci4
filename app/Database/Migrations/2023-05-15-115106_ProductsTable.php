@@ -24,6 +24,8 @@ class ProductsTable extends Migration
             'product_price' => $tbl->field('INT', 11),
             'supplier_id' => $tbl->field('INT', 10),
             'category_id' => $tbl->field('INT', 11, true),
+            'created_at' => $tbl->field('TIMESTAMP'),
+            'updated_at' => $tbl->field('TIMESTAMP'),
         ]);
         $this->forge->addPrimaryKey('product_id', 'pk_product');
         $this->forge->addForeignKey('supplier_id', 'suppliers', 'supplier_id', '', '', 'fk_supplier');

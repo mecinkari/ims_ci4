@@ -16,6 +16,8 @@ class CategoriesTable extends Migration
             $suffix . '_id' => $tbl->field('INT', 11, true, true),
             $suffix . '_name' => $tbl->field('VARCHAR', 128),
             $suffix . '_desc' => $tbl->field('VARCHAR', 255),
+            'created_at' => $tbl->field('TIMESTAMP'),
+            'updated_at' => $tbl->field('TIMESTAMP'),
         ]);
         $this->forge->addPrimaryKey($suffix . '_id', 'pk_' . $suffix);
         $this->forge->createTable($tbl->get_tbl_name());
