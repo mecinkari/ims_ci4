@@ -20,7 +20,7 @@ class OrdersTable extends Migration
             'updated_at' => $tbl->field('TIMESTAMP'),
         ]);
         $this->forge->addPrimaryKey('order_id', 'pk_order');
-        $this->forge->addForeignKey('user_id', 'users', 'user_id', '', '', 'fk_user');
+        $this->forge->addForeignKey('user_id', 'users', 'user_id');
         $this->forge->createTable($tbl->get_tbl_name());
 
         $db->enableForeignKeyChecks();
