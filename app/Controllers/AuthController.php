@@ -18,4 +18,15 @@ class AuthController extends BaseController
 
         echo view('auth/login', $data);
     }
+
+    public function register()
+    {
+        //
+        $data = [
+            'title' => $this->title . '-Register',
+            'appname' => $this->title,
+        ];
+
+        echo view('auth/register', $data);
+    }
 }
