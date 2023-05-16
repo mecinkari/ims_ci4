@@ -6,6 +6,8 @@ use App\Controllers\BaseController;
 
 class HomeController extends BaseController
 {
+    private $title = 'IMS';
+
     public function index()
     {
         //
@@ -14,6 +16,8 @@ class HomeController extends BaseController
             return redirect('auth/login');
         }
 
+        $data['title'] = $this->title . '|Dashboard';
+        $data['appname'] = $this->title;
         $data['user'] = session()->get('user');
 
         echo view('home/index', $data);

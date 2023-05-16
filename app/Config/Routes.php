@@ -38,6 +38,11 @@ $routes->group('auth', function ($routes) {
     $routes->get('logout', 'AuthController::logout');
 });
 
+$routes->group('profile', function ($routes) {
+    $routes->get('/', 'ProfileController::index');
+    $routes->post('update', 'ProfileController::update');
+});
+
 $routes->get('/dashboard', 'HomeController::index');
 
 /*
