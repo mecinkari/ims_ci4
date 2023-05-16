@@ -33,6 +33,7 @@ $routes->get('/', 'Home::index');
 
 $routes->group('auth', function ($routes) {
     $routes->get('login', 'AuthController::login');
+    $routes->post('login', 'AuthController::check_login');
     $routes->get('register', 'AuthController::register');
 });
 

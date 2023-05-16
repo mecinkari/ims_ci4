@@ -29,4 +29,33 @@ class AuthController extends BaseController
 
         echo view('auth/register', $data);
     }
+
+    public function check_login()
+    {
+        $data['title'] = $this->title . '-Register';
+        $data['appname'] = $this->title;
+        helper(['form']);
+
+        $rules = [
+            'username' => [
+                'label' => 'Username',
+                'rules' => 'required',
+            ],
+            'password' => [
+                'label' => 'Password',
+                'rules' => 'required|min_length[6]'
+            ]
+        ];
+
+        if ($this->validate($rules)) {
+            $data = [
+                'username' => $this->request->getPost('username'),
+                'password' => $this->request->getPost('password'),
+            ];
+            print_r($data);
+        } else {
+            $data['validation'] = $this->validator;
+            echo view('auth/login', $data);
+        }
+    }
 }

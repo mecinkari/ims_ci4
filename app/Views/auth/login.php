@@ -1,16 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+$validation = \Config\Services::validation();
+?>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?= $title ?></title>
-</head>
+<?= $this->extend('auth/layout') ?>
 
-<body>
-  <h1><?= $appname ?></h1>
-  <p>Login Page - <a href="<?= site_url('auth/register') ?>">Register</a></p>
-</body>
+<?= $this->section('content') ?>
+<div class="login-box">
+  <!-- /.login-logo -->
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center">
+      <a href="<?= site_url('auth/login') ?>" class="h1"><b><?= $appname ?></b></a>
+    </div>
+    <div class="card-body">
+      <!-- <p class="login-box-msg">Sign in to start your session</p> -->
 
-</html>
+      <form action="<?= site_url('auth/login') ?>" method="post">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" name="username" placeholder="Username">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+        <?php if ($validation->getError('username')) : ?>
+          <p class="text-danger"><?= $validation->getError('username') ?></p>
+        <?php endif; ?>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" name="password" placeholder="Password">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <?php if ($validation->getError('password')) : ?>
+          <p class="text-danger"><?= $validation->getError('password') ?></p>
+        <?php endif; ?>
+        <div class="row">
+          <div class="col-8">
+            <div class="icheck-primary">
+              <input type="checkbox" id="remember">
+              <label for="remember">
+                Remember Me
+              </label>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-4">
+            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</div>
+<?= $this->endSection() ?>
