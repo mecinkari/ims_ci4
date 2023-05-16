@@ -35,7 +35,10 @@ $routes->group('auth', function ($routes) {
     $routes->get('login', 'AuthController::login');
     $routes->post('login', 'AuthController::check_login');
     $routes->get('register', 'AuthController::register');
+    $routes->get('logout', 'AuthController::logout');
 });
+
+$routes->get('/dashboard', 'HomeController::index');
 
 /*
  * --------------------------------------------------------------------

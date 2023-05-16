@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\User;
 
 class AuthController extends BaseController
 {
@@ -34,7 +35,6 @@ class AuthController extends BaseController
     {
         $data['title'] = $this->title . '-Register';
         $data['appname'] = $this->title;
-        helper(['form']);
 
         $rules = [
             'username' => [
@@ -48,14 +48,36 @@ class AuthController extends BaseController
         ];
 
         if ($this->validate($rules)) {
-            $data = [
-                'username' => $this->request->getPost('username'),
-                'password' => $this->request->getPost('password'),
-            ];
-            print_r($data);
+            $user = new User();
+
+            $data['username'] = (string)$this->request->getPost('username');
+            $data['password'] = (string)$this->request->getPost('password');
+
+            $data['user'] = $user->select()->where('user_name', $data['username'])->first();
+
+            if ($data['user']) {
+                if (password_verify($data['password'], $data['user']['user_pass'])) {
+                    session()->set('user', $data['user']);
+                    session()->setFlashdata('success', 'Selamat Datang!');
+                    return redirect('dashboard');
+                } else {
+                    session()->setFlashdata('error', 'Password Salah!');
+                    return redirect('auth/login');
+                }
+            } else {
+                session()->setFlashdata('error', 'User tidak ditemukan!');
+                return redirect('auth/login');
+            }
         } else {
             $data['validation'] = $this->validator;
             echo view('auth/login', $data);
         }
+    }
+
+    public function logout()
+    {
+        session()->destroy();
+        session()->setFlashdata('success', 'Berhasil logout!');
+        return redirect('auth/login');
     }
 }

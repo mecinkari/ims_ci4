@@ -13,6 +13,17 @@ $validation = \Config\Services::validation();
     </div>
     <div class="card-body">
       <!-- <p class="login-box-msg">Sign in to start your session</p> -->
+      <?php if (session()->getFlashdata('error')) : ?>
+        <div class="alert alert-danger">
+          <?= session()->getFlashdata('error') ?>
+        </div>
+      <?php endif ?>
+
+      <?php if (session()->getFlashdata('success')) : ?>
+        <div class="alert alert-success">
+          <?= session()->getFlashdata('success') ?>
+        </div>
+      <?php endif ?>
 
       <form action="<?= site_url('auth/login') ?>" method="post">
         <div class="input-group mb-3">
@@ -39,12 +50,12 @@ $validation = \Config\Services::validation();
         <?php endif; ?>
         <div class="row">
           <div class="col-8">
-            <div class="icheck-primary">
+            <!-- <div class="icheck-primary">
               <input type="checkbox" id="remember">
               <label for="remember">
                 Remember Me
               </label>
-            </div>
+            </div> -->
           </div>
           <!-- /.col -->
           <div class="col-4">
