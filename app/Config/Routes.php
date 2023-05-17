@@ -49,6 +49,10 @@ $routes->group('admin', function ($routes) {
 });
 
 $routes->get('/dashboard', 'HomeController::index');
+$routes->group('user', function ($routes) {
+    $routes->get('/', 'HomeController::user');
+    $routes->get('change_username', 'HomeController::change_username');
+});
 
 /*
  * --------------------------------------------------------------------

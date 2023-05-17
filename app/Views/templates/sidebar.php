@@ -29,6 +29,12 @@
           </a>
         </li>
         <li class="nav-item">
+          <a href="<?= site_url('user') ?>" class="nav-link">
+            <i class="nav-icon fa fa-user"></i>
+            <p class="text">Your Account</p>
+          </a>
+        </li>
+        <li class="nav-item">
           <a href="<?= site_url('profile') ?>" class="nav-link">
             <i class="nav-icon fa fa-user"></i>
             <p class="text">Profile</p>
