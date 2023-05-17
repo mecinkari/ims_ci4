@@ -34,23 +34,32 @@
             <p class="text">Profile</p>
           </a>
         </li>
-        <li class="nav-header">LABELS</li>
+        <?php if (in_array($user['role_id'], array(1, 2, 3))) : ?>
+          <li class="nav-header">ADMIN</li>
+          <li class="nav-item">
+            <a href="<?= site_url('admin/master_user') ?>" class="nav-link">
+              <i class="nav-icon fa fa-user text-danger"></i>
+              <p class="text">Master User</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="<?= site_url('admin/master_category') ?>" class="nav-link">
+              <i class="nav-icon fa fa-user text-danger"></i>
+              <p class="text">Master Category</p>
+            </a>
+          </li>
+        <?php endif; ?>
+        <li class="nav-header">CUSTOMER'S MENU</li>
         <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon far fa-circle text-danger"></i>
-            <p class="text">Important</p>
+          <a href="<?= site_url('') ?>" class="nav-link">
+            <i class="nav-icon fas fa-circle text-primary"></i>
+            <p class="text">Order</p>
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon far fa-circle text-warning"></i>
-            <p>Warning</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon far fa-circle text-info"></i>
-            <p>Informational</p>
+          <a href="<?= site_url('') ?>" class="nav-link">
+            <i class="nav-icon fas fa-circle text-primary"></i>
+            <p class="text">Transaksi</p>
           </a>
         </li>
       </ul>

@@ -43,6 +43,11 @@ $routes->group('profile', function ($routes) {
     $routes->post('update', 'ProfileController::update');
 });
 
+$routes->group('admin', function ($routes) {
+    $routes->get('master_user', 'AdminController::master_user');
+    $routes->get('create_user', 'AdminController::create_user');
+});
+
 $routes->get('/dashboard', 'HomeController::index');
 
 /*
