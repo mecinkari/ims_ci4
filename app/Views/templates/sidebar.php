@@ -41,19 +41,29 @@
           </a>
         </li>
         <?php if (in_array($user['role_id'], array(1, 2, 3))) : ?>
+          <?php
+          $admin_links = [
+            [
+              'title' => 'Master User',
+              'url' => 'admin/master_user',
+              'icon' => 'fa fa-user'
+            ],
+            [
+              'title' => 'Master Category',
+              'url' => 'admin/master_category',
+              'icon' => 'fa fa-user'
+            ]
+          ]
+          ?>
           <li class="nav-header">ADMIN</li>
-          <li class="nav-item">
-            <a href="<?= site_url('admin/master_user') ?>" class="nav-link">
-              <i class="nav-icon fa fa-user text-danger"></i>
-              <p class="text">Master User</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="<?= site_url('admin/master_category') ?>" class="nav-link">
-              <i class="nav-icon fa fa-user text-danger"></i>
-              <p class="text">Master Category</p>
-            </a>
-          </li>
+          <?php foreach ($admin_links as $link) : ?>
+            <li class="nav-item">
+              <a href="<?= site_url($link['url']) ?>" class="nav-link">
+                <i class="nav-icon <?= $link['icon'] ?> text-danger"></i>
+                <p class="text"><?= $link['title'] ?></p>
+              </a>
+            </li>
+          <?php endforeach ?>
         <?php endif; ?>
         <li class="nav-header">CUSTOMER'S MENU</li>
         <li class="nav-item">

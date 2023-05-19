@@ -50,6 +50,7 @@ $routes->group('admin', function ($routes) {
     $routes->post('edit_user/(:any)', 'AdminController::update_user/$1');
     $routes->get('delete_user/(:any)', 'AdminController::delete_user/$1');
     $routes->post('create_user', 'AdminController::save_user');
+    $routes->get('master_category', 'CategoryController::index');
 });
 
 $routes->get('/dashboard', 'HomeController::index');
