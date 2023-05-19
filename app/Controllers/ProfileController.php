@@ -8,7 +8,14 @@ use App\Models\Role;
 
 class ProfileController extends BaseController
 {
-    private $title = 'IMS';
+    private $title = 'IMS', $profileModel, $roleModel, $userID;
+
+    public function __construct()
+    {
+        $this->profileModel = new Profile();
+        $this->roleModel = new Role();
+        $this->userID = session()->get('user')['user_id'];
+    }
 
     public function index()
     {
@@ -18,14 +25,11 @@ class ProfileController extends BaseController
             return redirect('auth/login');
         }
 
-        $profile = new Profile();
-        $role = new Role();
-
         $data['title'] = $this->title . '|Profile';
         $data['appname'] = $this->title;
         $data['user'] = session()->get('user');
-        $data['profile'] = $profile->where('user_id', $data['user']['user_id'])->first();
-        $data['role'] = $role->where('role_id', $data['user']['role_id'])->first();
+        $data['profile'] = $this->profileModel->where('user_id', $this->userID)->first();
+        $data['role'] = $this->roleModel->find($this->userID);
 
         echo view('home/profile', $data);
     }
@@ -38,8 +42,6 @@ class ProfileController extends BaseController
             return redirect('auth/login');
         }
 
-        $profile = new Profile();
-
         $id = $this->request->getPost('profile_id');
         $data_profile['full_name'] = $this->request->getPost('full_name');
         $data_profile['no_hp'] = $this->request->getPost('no_hp');
@@ -47,9 +49,7 @@ class ProfileController extends BaseController
         $data_profile['address_1'] = $this->request->getPost('address_1');
         $data_profile['address_2'] = $this->request->getPost('address_2');
 
-        // echo $id;
-        // print_r($data_profile);
-        $profile->update($id, $data_profile);
+        $this->profileModel->update($id, $data_profile);
         session()->setFlashdata('success', 'Data berhasil diperbarui');
         return redirect('profile');
     }

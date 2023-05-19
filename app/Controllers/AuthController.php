@@ -8,6 +8,12 @@ use App\Models\User;
 class AuthController extends BaseController
 {
     private $title = 'IMS';
+    private $userModel;
+
+    public function __construct()
+    {
+        $this->userModel = new User();
+    }
 
     public function login()
     {
@@ -48,12 +54,11 @@ class AuthController extends BaseController
         ];
 
         if ($this->validate($rules)) {
-            $user = new User();
 
             $data['username'] = (string)$this->request->getPost('username');
             $data['password'] = (string)$this->request->getPost('password');
 
-            $data['user'] = $user->select()->where('user_name', $data['username'])->first();
+            $data['user'] = $this->userModel->select()->where('user_name', $data['username'])->first();
 
             if ($data['user']) {
                 if (password_verify($data['password'], $data['user']['user_pass'])) {

@@ -52,6 +52,7 @@ $routes->get('/dashboard', 'HomeController::index');
 $routes->group('user', function ($routes) {
     $routes->get('/', 'HomeController::user');
     $routes->get('change_username', 'HomeController::change_username');
+    $routes->post('change_username', 'HomeController::update_username');
 });
 
 /*

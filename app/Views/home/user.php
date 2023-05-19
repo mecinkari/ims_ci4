@@ -59,8 +59,9 @@
 
             <p class="text-muted">
               <?= $user['updated_at'] ?>
-              <!-- date_default_timezone_set("Asia/Jakarta") -->
-              <!-- date('m-d-Y H:i:s') -->
+              <?php date_default_timezone_set("Asia/Jakarta");
+              //echo date('m-d-Y H:i:s') 
+              ?>
             </p>
 
             <hr>

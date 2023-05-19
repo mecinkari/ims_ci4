@@ -1,3 +1,7 @@
+<?php
+$validation = \Config\Services::validation();
+?>
+
 <?= $this->extend('templates/layout') ?>
 
 <?= $this->section('content') ?>
@@ -35,12 +39,20 @@
         <a href="<?= site_url('user') ?>" class="btn btn-secondary">Kembali</a>
       </div>
       <div class="card-body">
-        <form action="<?= site_url('user/update_username') ?>" method="post">
+        <form action="<?= site_url('user/change_username') ?>" method="post">
+          <?= csrf_field() ?>
           <div class="form-group row">
             <label for="" class="col-sm-2 col-form-label">Username</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" name="username" value="<?= $user['user_name'] ?>" placeholder="Username">
-              <!-- <small class="text-danger">Error</small> -->
+              <?php if ($validation->getError('username')) : ?>
+                <small class="text-danger"><?= $validation->getError('username') ?></small>
+              <?php endif ?>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="offset-sm-2 col-sm-10">
+              <button class="btn btn-success" type="submit">Submit</button>
             </div>
           </div>
         </form>
