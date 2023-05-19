@@ -14,7 +14,7 @@
       <?php endif ?>
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Tambah User</h1>
+          <h1>Edit User</h1>
         </div>
         <!-- <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -32,15 +32,15 @@
     <!-- Default box -->
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">Tambah data user</h3>
+        <h3 class="card-title">Edit data <?= $data_user['user_name'] ?></h3>
       </div>
       <div class="card-body">
         <?php $validation = \Config\Services::validation() ?>
-        <form action="<?= site_url('admin/create_user') ?>" method="post">
+        <form action="<?= site_url('admin/update_user') ?>" method="post">
           <div class="form-group row">
             <label for="" class="col-sm-2 col-form-label">Username</label>
             <div class="col-sm-10">
-              <input type="text" name="username" class="form-control">
+              <input type="text" name="username" value="<?= $data_user['user_name'] ?>" disabled class="form-control">
               <?php if ($validation->getError('username')) : ?>
                 <small class="text-danger"><?= $validation->getError('username') ?></small>
               <?php endif ?>
@@ -49,7 +49,7 @@
           <div class="form-group row">
             <label for="" class="col-sm-2 col-form-label">Password</label>
             <div class="col-sm-10">
-              <input type="password" name="password" class="form-control">
+              <input type="password" name="password" disabled class="form-control">
               <?php if ($validation->getError('password')) : ?>
                 <small class="text-danger"><?= $validation->getError('password') ?></small>
               <?php endif ?>
@@ -60,7 +60,7 @@
             <div class="col-sm-10">
               <select name="role_id" class="form-control" id="">
                 <?php foreach ($roles as $role) : ?>
-                  <option value="<?= $role['role_id'] ?>"><?= $role['role_id'] . '. ' . $role['role_name'] ?></option>
+                  <option <?php if ($data_user['role_id'] == $role['role_id']) : ?> selected <?php endif ?> value="<?= $role['role_id'] ?>"><?= $role['role_id'] . '. ' . $role['role_name'] ?></option>
                 <?php endforeach ?>
               </select>
             </div>

@@ -9,12 +9,12 @@ class Profile extends Model
     protected $DBGroup          = 'default';
     protected $table            = 'profiles';
     protected $primaryKey       = 'profile_id';
-    protected $useAutoIncrement = false;
+    protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'profile_id', 'user_id', 'full_name', 'no_hp', 'email', 'address_1', 'address_2'
+        'user_id', 'full_name', 'no_hp', 'email', 'address_1', 'address_2'
     ];
 
     // Dates

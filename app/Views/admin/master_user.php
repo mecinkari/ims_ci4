@@ -7,11 +7,6 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <div class="container-fluid">
-      <?php if (session()->getFlashdata('success')) : ?>
-        <div class="alert alert-success">
-          <?= session()->getFlashdata('success') ?>
-        </div>
-      <?php endif ?>
       <div class="row mb-2">
         <div class="col-sm-6">
           <h1>Master User</h1>
@@ -38,6 +33,13 @@
         <div class="p-3">
           <a href="<?= site_url('admin/create_user') ?>" class="btn btn-success"><i class="fa fa-plus"></i> Tambah User</a>
         </div>
+        <?php if (session()->getFlashdata('success')) : ?>
+          <div class="p-3">
+            <div class="alert alert-success">
+              <?= session()->getFlashdata('success') ?>
+            </div>
+          </div>
+        <?php endif ?>
         <table class="table table-head-fixed text-nowrap">
           <thead>
             <tr>
@@ -53,7 +55,7 @@
                 <td><?= $users->user_id ?></td>
                 <td><?= $users->user_name ?></td>
                 <td><?= $users->role_name ?></td>
-                <td><a href="#" class="btn btn-primary"><i class="fa fa-pen"></i></a></td>
+                <td><a href="<?= site_url('admin/edit_user/' . $users->user_id) ?>" class="btn btn-primary"><i class="fa fa-pen"></i></a> <a href="<?= site_url('admin/delete_user/' . $users->user_id) ?>" class="btn btn-danger"><i class="fa fa-trash"></i></a></td>
               </tr>
             <?php endforeach; ?>
           </tbody>

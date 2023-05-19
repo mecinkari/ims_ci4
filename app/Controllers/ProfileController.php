@@ -5,31 +5,30 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\Profile;
 use App\Models\Role;
+use App\Models\User;
 
 class ProfileController extends BaseController
 {
-    private $title = 'IMS', $profileModel, $roleModel, $userID;
+    private $title = 'IMS', $profileModel, $roleModel, $userModel, $userID;
 
     public function __construct()
     {
         $this->profileModel = new Profile();
         $this->roleModel = new Role();
+        $this->userModel = new User();
         $this->userID = session()->get('user')['user_id'];
     }
 
     public function index()
     {
         //
-        if (!session()->get('user')) {
-            session()->setFlashdata('error', 'Anda belum login');
-            return redirect('auth/login');
-        }
+        auth_check();
 
         $data['title'] = $this->title . '|Profile';
         $data['appname'] = $this->title;
-        $data['user'] = session()->get('user');
+        $data['user'] = $this->userModel->find($this->userID);
         $data['profile'] = $this->profileModel->where('user_id', $this->userID)->first();
-        $data['role'] = $this->roleModel->find($this->userID);
+        $data['role'] = $this->roleModel->find($data['user']['role_id']);
 
         echo view('home/profile', $data);
     }
@@ -37,10 +36,7 @@ class ProfileController extends BaseController
     public function update()
     {
         //
-        if (!session()->get('user')) {
-            session()->setFlashdata('error', 'Anda belum login');
-            return redirect('auth/login');
-        }
+        auth_check();
 
         $id = $this->request->getPost('profile_id');
         $data_profile['full_name'] = $this->request->getPost('full_name');

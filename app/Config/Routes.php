@@ -46,13 +46,18 @@ $routes->group('profile', function ($routes) {
 $routes->group('admin', function ($routes) {
     $routes->get('master_user', 'AdminController::master_user');
     $routes->get('create_user', 'AdminController::create_user');
+    $routes->get('edit_user/(:any)', 'AdminController::edit_user/$1');
+    $routes->get('delete_user/(:any)', 'AdminController::delete_user/$1');
+    $routes->post('create_user', 'AdminController::save_user');
 });
 
 $routes->get('/dashboard', 'HomeController::index');
 $routes->group('user', function ($routes) {
     $routes->get('/', 'HomeController::user');
     $routes->get('change_username', 'HomeController::change_username');
+    $routes->get('change_password', 'HomeController::change_password');
     $routes->post('change_username', 'HomeController::update_username');
+    $routes->post('change_password', 'HomeController::update_password');
 });
 
 /*

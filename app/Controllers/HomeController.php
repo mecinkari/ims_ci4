@@ -21,10 +21,7 @@ class HomeController extends BaseController
     public function index()
     {
         //
-        if (!session()->get('user')) {
-            session()->setFlashdata('error', 'Anda belum login');
-            return redirect('auth/login');
-        }
+        auth_check();
 
         $data['title'] = $this->title . '|Dashboard';
         $data['appname'] = $this->title;
@@ -36,10 +33,7 @@ class HomeController extends BaseController
     public function user()
     {
         //
-        if (!session()->get('user')) {
-            session()->setFlashdata('error', 'Anda belum login');
-            return redirect('auth/login');
-        }
+        auth_check();
 
         $data['user'] = $this->userModel->find($this->userID);
         $data['title'] = $this->title . '|' . $data['user']['user_name'] . '\'s account';
@@ -51,10 +45,7 @@ class HomeController extends BaseController
     public function change_username()
     {
         //
-        if (!session()->get('user')) {
-            session()->setFlashdata('error', 'Anda belum login');
-            return redirect('auth/login');
-        }
+        auth_check();
 
         $data['user'] = $this->userModel->find($this->userID);
         $data['title'] = $this->title . '|Change Username';
@@ -65,10 +56,7 @@ class HomeController extends BaseController
 
     public function update_username()
     {
-        if (!session()->get('user')) {
-            session()->setFlashdata('error', 'Anda belum login');
-            return redirect('auth/login');
-        }
+        auth_check();
 
         $data['user'] = $this->userModel->find($this->userID);
         $data['title'] = $this->title . '|Change Username';
@@ -99,5 +87,55 @@ class HomeController extends BaseController
         session()->set('user', $data['user']);
         session()->setFlashdata('success', 'Username berhasil di-update!');
         return redirect('user');
+    }
+
+    public function change_password()
+    {
+        auth_check();
+
+        $data['user'] = $this->userModel->find($this->userID);
+        $data['title'] = $this->title . '|Change Username';
+        $data['appname'] = $this->title;
+
+        echo view('home/change_password', $data);
+    }
+
+    public function update_password()
+    {
+        auth_check();
+        $data['user'] = $this->userModel->find($this->userID);
+        $data['title'] = $this->title . '|Change Username';
+        $data['appname'] = $this->title;
+
+        $validation_rules = [
+            'old_password' => [
+                'label' => 'Password Lama',
+                'rules' => 'required'
+            ],
+            'new_password' => [
+                'label' => 'Password Baru',
+                'rules' => 'required|min_length[6]'
+            ]
+        ];
+
+        if (!$this->validate($validation_rules)) {
+            $data['validation'] = $this->validator;
+            return view('user/change_password', $data);
+        }
+
+        $old_password = (string) $this->request->getPost('old_password');
+        $new_password = (string) $this->request->getPost('new_password');
+        $user = $this->userModel->find($this->userID);
+
+        if (!password_verify($old_password, $user['user_pass'])) {
+            return redirect('user/change_password')->with('error', 'Password lama tidak sesuai!');
+        }
+
+        $new_data = [
+            'user_pass' => $new_password
+        ];
+
+        $this->userModel->update($this->userID, $new_data);
+        return redirect('user')->with('success', 'Password berhasil di-update!');
     }
 }
