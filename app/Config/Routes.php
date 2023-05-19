@@ -47,6 +47,7 @@ $routes->group('admin', function ($routes) {
     $routes->get('master_user', 'AdminController::master_user');
     $routes->get('create_user', 'AdminController::create_user');
     $routes->get('edit_user/(:any)', 'AdminController::edit_user/$1');
+    $routes->post('edit_user/(:any)', 'AdminController::update_user/$1');
     $routes->get('delete_user/(:any)', 'AdminController::delete_user/$1');
     $routes->post('create_user', 'AdminController::save_user');
 });

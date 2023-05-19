@@ -128,13 +128,28 @@ class AdminController extends BaseController
         echo view("admin/edit_user", $data);
     }
 
+    public function update_user($id = null)
+    {
+        auth_check();
+        role_check($this->userID, [1, 2, 3]);
+
+        $user = $this->userModel->find($id);
+
+        $data = [
+            'role_id' => $this->request->getPost('role_id')
+        ];
+
+        $this->userModel->update($id, $data);
+        return redirect('admin/master_user')->with('success', 'User "' . $user['user_name'] . '" telah berhasil di-update!');
+    }
+
     public function delete_user($id = null)
     {
         auth_check();
         role_check($this->userID, [1, 2, 3]);
 
+        $this->roleModel->where('user_id', $id)->delete();
         $this->userModel->delete($id);
-        $this->userModel->where('user_id', $id)->delete();
         return redirect('admin/master_user')->with('success', 'User berhasil dihapus dari database!');
     }
 }

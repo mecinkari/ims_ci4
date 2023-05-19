@@ -36,7 +36,7 @@
       </div>
       <div class="card-body">
         <?php $validation = \Config\Services::validation() ?>
-        <form action="<?= site_url('admin/update_user') ?>" method="post">
+        <form action="<?= site_url('admin/edit_user/' . $data_user['user_id']) ?>" method="post">
           <div class="form-group row">
             <label for="" class="col-sm-2 col-form-label">Username</label>
             <div class="col-sm-10">
