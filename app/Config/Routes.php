@@ -39,29 +39,31 @@ $routes->group('auth', function ($routes) {
 });
 
 $routes->group('profile', function ($routes) {
-    $routes->get('/', 'ProfileController::index');
-    $routes->post('update', 'ProfileController::update');
+    $routes->get('/', 'ProfileController::index', ['filter' => 'authcheck']);
+    $routes->post('update', 'ProfileController::update', ['filter' => 'authcheck']);
 });
 
 $routes->group('admin', function ($routes) {
-    $routes->get('master_user', 'AdminController::master_user');
-    $routes->get('create_user', 'AdminController::create_user');
-    $routes->get('edit_user/(:any)', 'AdminController::edit_user/$1');
-    $routes->post('edit_user/(:any)', 'AdminController::update_user/$1');
-    $routes->get('delete_user/(:any)', 'AdminController::delete_user/$1');
-    $routes->post('create_user', 'AdminController::save_user');
-    $routes->get('master_category', 'CategoryController::index');
+    $routes->get('master_user', 'AdminController::master_user', ['filter' => 'authcheck']);
+    $routes->get('create_user', 'AdminController::create_user', ['filter' => 'authcheck']);
+    $routes->get('edit_user/(:any)', 'AdminController::edit_user/$1', ['filter' => 'authcheck']);
+    $routes->post('edit_user/(:any)', 'AdminController::update_user/$1', ['filter' => 'authcheck']);
+    $routes->get('delete_user/(:any)', 'AdminController::delete_user/$1', ['filter' => 'authcheck']);
+    $routes->post('create_user', 'AdminController::save_user', ['filter' => 'authcheck']);
+    $routes->get('master_category', 'CategoryController::index', ['filter' => 'authcheck']);
+    $routes->get('create_category', 'CategoryController::create', ['filter' => 'authcheck']);
 });
 
-$routes->get('/dashboard', 'HomeController::index');
 $routes->group('user', function ($routes) {
-    $routes->get('/', 'HomeController::user');
-    $routes->get('change_username', 'HomeController::change_username');
-    $routes->get('change_password', 'HomeController::change_password');
-    $routes->post('change_username', 'HomeController::update_username');
-    $routes->post('change_password', 'HomeController::update_password');
+    $routes->get('/', 'HomeController::user', ['filter' => 'authcheck']);
+    $routes->get('change_username', 'HomeController::change_username', ['filter' => 'authcheck']);
+    $routes->get('change_password', 'HomeController::change_password', ['filter' => 'authcheck']);
+    $routes->post('change_username', 'HomeController::update_username', ['filter' => 'authcheck']);
+    $routes->post('change_password', 'HomeController::update_password', ['filter' => 'authcheck']);
 });
 
+$routes->get('/dashboard', 'HomeController::index', ['filter' => 'authcheck']);
+$routes->get('/forbidden', 'AuthController::forbidden');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

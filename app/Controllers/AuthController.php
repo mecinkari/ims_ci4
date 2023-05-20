@@ -81,8 +81,13 @@ class AuthController extends BaseController
 
     public function logout()
     {
-        session()->destroy();
+        session()->remove('user');
         session()->setFlashdata('success', 'Berhasil logout!');
         return redirect('auth/login');
+    }
+
+    public function forbidden()
+    {
+        return view('auth/error_403');
     }
 }

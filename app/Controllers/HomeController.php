@@ -15,26 +15,22 @@ class HomeController extends BaseController
     public function __construct()
     {
         $this->userModel = new User();
-        $this->userID = session()->get('user')['user_id'];
+        if (session()->get('user')) {
+            $this->userID = session()->get('user')['user_id'];
+        }
     }
 
     public function index()
     {
-        //
-        auth_check();
-
         $data['title'] = $this->title . '|Dashboard';
         $data['appname'] = $this->title;
         $data['user'] = $this->userModel->find($this->userID);
 
-        echo view('home/index', $data);
+        return view('home/index', $data);
     }
 
     public function user()
     {
-        //
-        auth_check();
-
         $data['user'] = $this->userModel->find($this->userID);
         $data['title'] = $this->title . '|' . $data['user']['user_name'] . '\'s account';
         $data['appname'] = $this->title;
@@ -44,9 +40,6 @@ class HomeController extends BaseController
 
     public function change_username()
     {
-        //
-        auth_check();
-
         $data['user'] = $this->userModel->find($this->userID);
         $data['title'] = $this->title . '|Change Username';
         $data['appname'] = $this->title;
@@ -56,8 +49,6 @@ class HomeController extends BaseController
 
     public function update_username()
     {
-        auth_check();
-
         $data['user'] = $this->userModel->find($this->userID);
         $data['title'] = $this->title . '|Change Username';
         $data['appname'] = $this->title;
@@ -91,8 +82,6 @@ class HomeController extends BaseController
 
     public function change_password()
     {
-        auth_check();
-
         $data['user'] = $this->userModel->find($this->userID);
         $data['title'] = $this->title . '|Change Username';
         $data['appname'] = $this->title;
@@ -102,7 +91,6 @@ class HomeController extends BaseController
 
     public function update_password()
     {
-        auth_check();
         $data['user'] = $this->userModel->find($this->userID);
         $data['title'] = $this->title . '|Change Username';
         $data['appname'] = $this->title;

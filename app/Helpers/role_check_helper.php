@@ -1,10 +1,12 @@
 <?php
 
-if (!function_exists('role_check')) {
-  function role_check($user_role = null, $given_role = [])
-  {
-    if (!in_array($user_role, $given_role)) {
-      return redirect()->back();
-    }
+use App\Models\User;
+
+function role_check($user_id = null, $given_role = [])
+{
+  $user = new User();
+  $user_role = $user->find($user_id);
+  if (in_array($user_role['role_id'], $given_role)) {
+    return redirect()->to('forbidden');
   }
 }

@@ -18,19 +18,32 @@ class CategoryController extends BaseController
         $this->roleModel = new Role();
         $this->userModel = new User();
         $this->categoryModel = new Category();
-        $this->userID = session()->get('user')['user_id'];
+        if (session()->get('user')) {
+            $this->userID = session()->get('user')['user_id'];
+        }
     }
 
     public function index()
     {
         //
-        auth_check();
-        role_check();
+        helper('custom');
+        is_logged_in();
+        role_check('dL4erzyyJbTy', [2, 3]);
 
         $data['title'] = $this->title . '|Master Category';
         $data['appname'] = $this->title;
         $data['user'] = $this->userModel->find($this->userID);
 
-        echo view('category/index', $data);
+        return view('category/index', $data);
+    }
+
+    public function create()
+    {
+        is_logged_in();
+        role_check($this->userID, [3]);
+        $data['title'] = $this->title . '|Master Category';
+        $data['appname'] = $this->title;
+        $data['user'] = $this->userModel->find($this->userID);
+        echo view('category/create', $data);
     }
 }

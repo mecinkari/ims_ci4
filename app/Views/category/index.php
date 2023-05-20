@@ -30,7 +30,23 @@
       <div class="card-header">
         <h3 class="card-title">Master Categories</h3>
       </div>
-      <div class="card-body">
+      <div class="card-body table-responsive p-0" style="height: 500px;">
+        <div class="p-3">
+          <a href="<?= site_url('admin/create_category') ?>" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Category</a>
+        </div>
+        <table class="table table-head-fixed text-nowrap">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nama</th>
+              <th>Deskripsi</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
       </div>
     </div>
     <!-- /.card -->
