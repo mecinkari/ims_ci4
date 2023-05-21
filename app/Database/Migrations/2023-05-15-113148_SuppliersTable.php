@@ -13,7 +13,7 @@ class SuppliersTable extends Migration
         $tbl = new Fields('suppliers');
 
         $this->forge->addField([
-            $sup . 'id' => $tbl->field('INT', 10),
+            $sup . 'id' => $tbl->field('VARCHAR', 12),
             $sup . 'name' => $tbl->field('VARCHAR', 128),
             $sup . 'address' => $tbl->field('VARCHAR', 255),
             $sup . 'phone' => $tbl->field('VARCHAR', 128),
@@ -23,13 +23,12 @@ class SuppliersTable extends Migration
         ]);
 
         $this->forge->addPrimaryKey($sup . 'id', 'pk_supplier');
-        $this->forge->createTable($tbl->get_tbl_name());
+        $this->forge->createTable('suppliers');
     }
 
     public function down()
     {
         //
-        $tbl = new Fields('suppliers');
-        $this->forge->dropTable($tbl->get_tbl_name(), true);
+        $this->forge->dropTable('suppliers', true);
     }
 }

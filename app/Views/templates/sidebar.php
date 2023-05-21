@@ -51,7 +51,12 @@
             [
               'title' => 'Master Category',
               'url' => 'admin/master_category',
-              'icon' => 'fa fa-user'
+              'icon' => 'fa fa-window-restore'
+            ],
+            [
+              'title' => 'Master Supplier',
+              'url' => 'admin/master_supplier',
+              'icon' => 'fa fa-cubes'
             ]
           ]
           ?>

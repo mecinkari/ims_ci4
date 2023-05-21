@@ -25,3 +25,25 @@ function role_check($user_id = null, $given_role = [])
     return redirect()->to('forbidden');
   }
 }
+
+function textToSlug($text = '')
+{
+  $text = trim($text);
+  if (empty($text)) return '';
+  $text = preg_replace("/[^a-zA-Z0-9\-\s]+/", "", $text);
+  $text = strtolower(trim($text));
+  $text = str_replace(' ', '-', $text);
+  $text = $text_ori = preg_replace('/\-{2,}/', '-', $text);
+  return $text;
+}
+
+function number_generator($length = 12)
+{
+  $characters = '0123456789';
+  $charactersLength = strlen($characters);
+  $randomString = '';
+  for ($i = 0; $i < $length; $i++) {
+    $randomString .= $characters[random_int(0, $charactersLength - 1)];
+  }
+  return $randomString;
+}

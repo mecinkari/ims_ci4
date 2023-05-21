@@ -16,14 +16,12 @@ class ProfileController extends BaseController
         $this->profileModel = new Profile();
         $this->roleModel = new Role();
         $this->userModel = new User();
-        $this->userID = session()->get('user')['user_id'];
+        $this->userID = session()->get('user_id');
     }
 
     public function index()
     {
         //
-        auth_check();
-
         $data['title'] = $this->title . '|Profile';
         $data['appname'] = $this->title;
         $data['user'] = $this->userModel->find($this->userID);
@@ -36,8 +34,6 @@ class ProfileController extends BaseController
     public function update()
     {
         //
-        auth_check();
-
         $id = $this->request->getPost('profile_id');
         $data_profile['full_name'] = $this->request->getPost('full_name');
         $data_profile['no_hp'] = $this->request->getPost('no_hp');

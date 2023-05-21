@@ -2,11 +2,12 @@
 
 namespace App\Filters;
 
+use App\Models\User;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class MyFilter implements FilterInterface
+class AdminFilter implements FilterInterface
 {
     /**
      * Do whatever processing this filter needs to do.
@@ -27,9 +28,13 @@ class MyFilter implements FilterInterface
     {
         //
         $session = \Config\Services::session();
+        $userModel = new User();
+        if ($session->get('user_id')) {
+            $user = $userModel->find($session->get('user_id'));
 
-        if (!$session->get('user_id')) {
-            return redirect()->to('auth/login')->with('error', 'Anda Belum Login!');
+            if (!in_array($user['role_id'], [1, 2, 3])) {
+                return redirect()->to('forbidden');
+            }
         }
     }
 

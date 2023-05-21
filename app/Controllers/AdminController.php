@@ -18,20 +18,12 @@ class AdminController extends BaseController
         $this->userModel = new User();
         $this->roleModel = new Role();
         $this->profileModel = new Profile();
-        $this->userID = session()->get('user')['user_id'];
+        $this->userID = session()->get('user_id');
     }
 
     public function master_user()
     {
         //
-        auth_check();
-
-        $session = session()->get('user');
-
-        if (!in_array($session['role_id'], array(1, 2, 3))) {
-            return redirect()->back();
-        }
-
         $db = \Config\Database::connect();
 
         $data['title'] = $this->title . '|Master User';
@@ -48,26 +40,16 @@ class AdminController extends BaseController
 
     public function create_user()
     {
-        auth_check();
-
-        $session = session()->get('user');
-
-        role_check($this->userID, [1, 2, 3]);
 
         $data['title'] = $this->title . '|Create User';
         $data['appname'] = $this->title;
         $data['user'] = $this->userModel->find($this->userID);
         $data['roles'] = $this->roleModel->findAll();
-        // dd($data['roles']);
         echo view("admin/create_user", $data);
     }
 
     public function save_user()
     {
-        helper('random_string');
-        auth_check();
-        role_check($this->userID, [1, 2, 3]);
-
         $data['title'] = $this->title . '|Create User';
         $data['appname'] = $this->title;
         $data['user'] = $this->userModel->find($this->userID);
@@ -115,7 +97,6 @@ class AdminController extends BaseController
 
     public function edit_user($id = null)
     {
-        auth_check();
         role_check($this->userID, [1, 2, 3]);
 
         $user = $this->userModel->find($id);
@@ -130,7 +111,6 @@ class AdminController extends BaseController
 
     public function update_user($id = null)
     {
-        auth_check();
         role_check($this->userID, [1, 2, 3]);
 
         $user = $this->userModel->find($id);
@@ -145,7 +125,6 @@ class AdminController extends BaseController
 
     public function delete_user($id = null)
     {
-        auth_check();
         role_check($this->userID, [1, 2, 3]);
 
         $this->roleModel->where('user_id', $id)->delete();

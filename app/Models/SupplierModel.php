@@ -4,16 +4,16 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Category extends Model
+class SupplierModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'categories';
-    protected $primaryKey       = 'category_id';
-    protected $useAutoIncrement = true;
+    protected $table            = 'suppliers';
+    protected $primaryKey       = 'supplier_id';
+    protected $useAutoIncrement = false;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['category_name', 'category_desc', 'category_slug'];
+    protected $allowedFields    = ['supplier_id', 'supplier_name', 'supplier_address', 'supplier_phone', 'supplier_email'];
 
     // Dates
     protected $useTimestamps = false;

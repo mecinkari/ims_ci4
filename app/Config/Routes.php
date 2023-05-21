@@ -38,28 +38,43 @@ $routes->group('auth', function ($routes) {
     $routes->get('logout', 'AuthController::logout');
 });
 
-$routes->group('profile', function ($routes) {
-    $routes->get('/', 'ProfileController::index', ['filter' => 'authcheck']);
-    $routes->post('update', 'ProfileController::update', ['filter' => 'authcheck']);
+$routes->group('profile', ['filter' => 'authcheck'], function ($routes) {
+    $routes->get('/', 'ProfileController::index');
+    $routes->post('update', 'ProfileController::update');
 });
 
-$routes->group('admin', function ($routes) {
-    $routes->get('master_user', 'AdminController::master_user', ['filter' => 'authcheck']);
-    $routes->get('create_user', 'AdminController::create_user', ['filter' => 'authcheck']);
-    $routes->get('edit_user/(:any)', 'AdminController::edit_user/$1', ['filter' => 'authcheck']);
-    $routes->post('edit_user/(:any)', 'AdminController::update_user/$1', ['filter' => 'authcheck']);
-    $routes->get('delete_user/(:any)', 'AdminController::delete_user/$1', ['filter' => 'authcheck']);
-    $routes->post('create_user', 'AdminController::save_user', ['filter' => 'authcheck']);
-    $routes->get('master_category', 'CategoryController::index', ['filter' => 'authcheck']);
-    $routes->get('create_category', 'CategoryController::create', ['filter' => 'authcheck']);
+$routes->group('admin', ['filter' => 'authcheck', 'filter' => 'admin-only'], function ($routes) {
+    // Create, Read, Update, Delete done
+    $routes->get('master_user', 'AdminController::master_user');
+    $routes->get('create_user', 'AdminController::create_user');
+    $routes->post('create_user', 'AdminController::save_user');
+    $routes->get('edit_user/(:any)', 'AdminController::edit_user/$1');
+    $routes->post('edit_user/(:any)', 'AdminController::update_user/$1');
+    $routes->get('delete_user/(:any)', 'AdminController::delete_user/$1');
+
+    // Create, Read, Update, Delete done
+    $routes->get('master_category', 'CategoryController::index');
+    $routes->get('create_category', 'CategoryController::create');
+    $routes->post('create_category', 'CategoryController::save');
+    $routes->get('edit_category/(:any)', 'CategoryController::edit/$1');
+    $routes->post('edit_category/(:any)', 'CategoryController::update/$1');
+    $routes->get('delete_category/(:any)', 'CategoryController::delete/$1');
+
+    // Create, Read Update, Delete done
+    $routes->get('master_supplier', 'SupplierController::index');
+    $routes->get('create_supplier', 'SupplierController::create');
+    $routes->post('create_supplier', 'SupplierController::save');
+    $routes->get('edit_supplier/(:any)', 'SupplierController::edit/$1');
+    $routes->post('edit_supplier/(:any)', 'SupplierController::update/$1');
+    $routes->get('delete_supplier/(:any)', 'SupplierController::delete/$1');
 });
 
-$routes->group('user', function ($routes) {
-    $routes->get('/', 'HomeController::user', ['filter' => 'authcheck']);
-    $routes->get('change_username', 'HomeController::change_username', ['filter' => 'authcheck']);
-    $routes->get('change_password', 'HomeController::change_password', ['filter' => 'authcheck']);
-    $routes->post('change_username', 'HomeController::update_username', ['filter' => 'authcheck']);
-    $routes->post('change_password', 'HomeController::update_password', ['filter' => 'authcheck']);
+$routes->group('user', ['filter' => 'authcheck'], function ($routes) {
+    $routes->get('/', 'HomeController::user');
+    $routes->get('change_username', 'HomeController::change_username');
+    $routes->get('change_password', 'HomeController::change_password');
+    $routes->post('change_username', 'HomeController::update_username');
+    $routes->post('change_password', 'HomeController::update_password');
 });
 
 $routes->get('/dashboard', 'HomeController::index', ['filter' => 'authcheck']);

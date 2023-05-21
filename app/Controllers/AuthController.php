@@ -21,6 +21,7 @@ class AuthController extends BaseController
         $data = [
             'title' => $this->title . '-Login',
             'appname' => $this->title,
+            'string' => string_generator()
         ];
 
         echo view('auth/login', $data);
@@ -62,7 +63,7 @@ class AuthController extends BaseController
 
             if ($data['user']) {
                 if (password_verify($data['password'], $data['user']['user_pass'])) {
-                    session()->set('user', $data['user']);
+                    session()->set('user_id', $data['user']['user_id']);
                     session()->setFlashdata('success', 'Selamat Datang!');
                     return redirect('dashboard');
                 } else {
@@ -81,7 +82,7 @@ class AuthController extends BaseController
 
     public function logout()
     {
-        session()->remove('user');
+        session()->remove('user_id');
         session()->setFlashdata('success', 'Berhasil logout!');
         return redirect('auth/login');
     }

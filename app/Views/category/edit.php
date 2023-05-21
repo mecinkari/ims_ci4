@@ -9,7 +9,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Tambah Category</h1>
+          <h1>Edit Category</h1>
         </div>
         <!-- <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -27,13 +27,13 @@
     <!-- Default box -->
     <div class="card">
       <div class="card-body">
-        <form action="<?= site_url('admin/create_category') ?>" method="post">
+        <form action="<?= site_url('admin/edit_category/' . $category['category_id']) ?>" method="post">
           <?= csrf_field() ?>
           <?php $validation = \Config\Services::validation() ?>
           <div class="form-group row">
             <label for="" class="col-sm-2 col-form-label">Nama Kategori</label>
             <div class="col-sm-10">
-              <input type="text" name="category_name" class="form-control">
+              <input type="text" name="category_name" class="form-control" value="<?= $category['category_name'] ?>">
               <?php if ($validation->getError('category_name')) : ?>
                 <small class="text-danger"><?= $validation->getError('category_name') ?></small>
               <?php endif ?>
@@ -42,7 +42,7 @@
           <div class="form-group row">
             <label for="" class="col-sm-2 col-form-label">Deskripsi</label>
             <div class="col-sm-10">
-              <input type="text" name="category_desc" class="form-control">
+              <input type="text" name="category_desc" class="form-control" value="<?= $category['category_desc'] ?>">
               <?php if ($validation->getError('category_desc')) : ?>
                 <small class="text-danger"><?= $validation->getError('category_desc') ?></small>
               <?php endif ?>

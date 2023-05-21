@@ -14,7 +14,7 @@
       <?php endif ?>
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Master Categories</h1>
+          <h1><?= $title ?></h1>
         </div>
         <div class="col-sm-6">
         </div>
@@ -27,33 +27,34 @@
   <section class="content">
     <!-- Default box -->
     <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">Master Categories</h3>
-      </div>
       <div class="card-body table-responsive p-0" style="height: 500px;">
         <div class="p-3">
-          <a href="<?= site_url('admin/create_category') ?>" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Category</a>
+          <a href="<?= site_url('admin/create_supplier') ?>" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Data Supplier</a>
         </div>
         <table class="table table-head-fixed text-nowrap">
           <thead>
             <tr>
               <th>ID</th>
               <th>Nama</th>
-              <th>Deskripsi</th>
+              <th>Alamat</th>
+              <th>No. Telp</th>
+              <th>Email</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($categories as $category) : ?>
+            <?php foreach ($suppliers as $supplier) : ?>
               <tr>
-                <th><?= $category['category_id'] ?></th>
-                <td><?= $category['category_name'] ?></td>
-                <td><?= $category['category_desc'] ?></td>
+                <th><?= $supplier['supplier_id'] ?></th>
+                <td><?= $supplier['supplier_name'] ?></td>
+                <td><?= $supplier['supplier_address'] ?></td>
+                <td><?= $supplier['supplier_phone'] ?></td>
+                <td><?= $supplier['supplier_email'] ?></td>
                 <td>
-                  <a href="<?= site_url('admin/edit_category/' . $category['category_id']) ?>" class="btn btn-primary">
+                  <a href="<?= site_url('admin/edit_supplier/' . $supplier['supplier_id']) ?>" class="btn btn-primary">
                     <div class="fa fa-pen"></div>
                   </a>
-                  <a href="<?= site_url('admin/delete_category/' . $category['category_id']) ?>" class="btn btn-danger">
+                  <a href="<?= site_url('admin/delete_supplier/' . $supplier['supplier_id']) ?>" class="btn btn-danger">
                     <div class="fa fa-trash"></div>
                   </a>
                 </td>

@@ -15,8 +15,8 @@ class HomeController extends BaseController
     public function __construct()
     {
         $this->userModel = new User();
-        if (session()->get('user')) {
-            $this->userID = session()->get('user')['user_id'];
+        if (session()->get('user_id')) {
+            $this->userID = session()->get('user_id');
         }
     }
 

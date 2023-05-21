@@ -12,12 +12,10 @@ class UserSeeder extends Seeder
         //
         $tbl = new Fields('users');
         $data = array(
-            array(
-                'user_id' => 'dL4erzyyJbTy',
-                'user_name' => 'mecinkari',
-                'user_pass' => password_hash('12345678', PASSWORD_DEFAULT),
-                'role_id' => 1,
-            ),
+            'user_id' => 'dL4erzyyJbTy',
+            'user_name' => 'mecinkari',
+            'user_pass' => password_hash('12345678', PASSWORD_DEFAULT),
+            'role_id' => 1,
         );
 
         $this->db->table($tbl->get_tbl_name())->insertBatch($data);
