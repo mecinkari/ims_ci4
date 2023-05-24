@@ -22,12 +22,21 @@
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-header">BASIC</li>
-        <li class="nav-item">
-          <a href="<?= site_url('dashboard') ?>" class="nav-link">
-            <i class="nav-icon fa fa-tachometer-alt"></i>
-            <p class="text">Dashboard</p>
-          </a>
-        </li>
+        <?php if (in_array($user['role_id'], array(1, 2, 3, 4))) : ?>
+          <li class="nav-item">
+            <a href="<?= site_url('dashboard') ?>" class="nav-link">
+              <i class="nav-icon fa fa-tachometer-alt"></i>
+              <p class="text">Dashboard</p>
+            </a>
+          </li>
+        <?php else : ?>
+          <li class="nav-item">
+            <a href="<?= site_url('home') ?>" class="nav-link">
+              <i class="nav-icon fa fa-home"></i>
+              <p class="text">Home</p>
+            </a>
+          </li>
+        <?php endif ?>
         <li class="nav-item">
           <a href="<?= site_url('user') ?>" class="nav-link">
             <i class="nav-icon fa fa-user"></i>
@@ -57,6 +66,11 @@
               'title' => 'Master Supplier',
               'url' => 'admin/master_supplier',
               'icon' => 'fa fa-cubes'
+            ],
+            [
+              'title' => 'Master Product',
+              'url' => 'admin/master_product',
+              'icon' => 'fa fa-cube'
             ]
           ]
           ?>
@@ -70,19 +84,21 @@
             </li>
           <?php endforeach ?>
         <?php endif; ?>
-        <li class="nav-header">CUSTOMER'S MENU</li>
-        <li class="nav-item">
-          <a href="<?= site_url('') ?>" class="nav-link">
-            <i class="nav-icon fas fa-circle text-primary"></i>
-            <p class="text">Order</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="<?= site_url('') ?>" class="nav-link">
-            <i class="nav-icon fas fa-circle text-primary"></i>
-            <p class="text">Transaksi</p>
-          </a>
-        </li>
+        <?php if ($user['role_id'] == 5) : ?>
+          <li class="nav-header">CUSTOMER'S MENU</li>
+          <li class="nav-item">
+            <a href="<?= site_url('order') ?>" class="nav-link">
+              <i class="nav-icon fas fa-circle text-primary"></i>
+              <p class="text">Order</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="<?= site_url('transaction') ?>" class="nav-link">
+              <i class="nav-icon fas fa-circle text-primary"></i>
+              <p class="text">Transaksi</p>
+            </a>
+          </li>
+        <?php endif ?>
       </ul>
     </nav>
     <!-- /.sidebar-menu -->

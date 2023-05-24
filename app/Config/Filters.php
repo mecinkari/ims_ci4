@@ -2,8 +2,8 @@
 
 namespace Config;
 
-use App\Filters\AdminFilter;
 use App\Filters\MyFilter;
+use App\Filters\RoleChecker;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
@@ -24,7 +24,7 @@ class Filters extends BaseConfig
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
         'authcheck' => MyFilter::class,
-        'admin-only' => AdminFilter::class
+        'role-checker' => RoleChecker::class
     ];
 
     /**

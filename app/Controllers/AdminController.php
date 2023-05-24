@@ -21,6 +21,15 @@ class AdminController extends BaseController
         $this->userID = session()->get('user_id');
     }
 
+    public function index()
+    {
+        $data['title'] = $this->title . '|Dashboard';
+        $data['appname'] = $this->title;
+        $data['user'] = $this->userModel->find($this->userID);
+
+        return view('home/index', $data);
+    }
+
     public function master_user()
     {
         //

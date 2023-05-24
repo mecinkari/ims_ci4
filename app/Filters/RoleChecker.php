@@ -7,7 +7,7 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class AdminFilter implements FilterInterface
+class RoleChecker implements FilterInterface
 {
     /**
      * Do whatever processing this filter needs to do.
@@ -32,7 +32,7 @@ class AdminFilter implements FilterInterface
         if ($session->get('user_id')) {
             $user = $userModel->find($session->get('user_id'));
 
-            if (!in_array($user['role_id'], [1, 2, 3])) {
+            if (!in_array($user['role_id'], $arguments)) {
                 return redirect()->to('forbidden');
             }
         }

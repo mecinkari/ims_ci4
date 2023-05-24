@@ -64,8 +64,12 @@ class AuthController extends BaseController
             if ($data['user']) {
                 if (password_verify($data['password'], $data['user']['user_pass'])) {
                     session()->set('user_id', $data['user']['user_id']);
-                    session()->setFlashdata('success', 'Selamat Datang!');
-                    return redirect('dashboard');
+                    session()->setFlashdata('success', 'Selamat Datang ' . $data['user']['user_name'] . '!');
+                    if (in_array($data['user']['role_id'], [1, 2, 3, 4])) {
+                        return redirect()->to('dashboard');
+                    } else {
+                        return redirect()->to('home');
+                    }
                 } else {
                     session()->setFlashdata('error', 'Password Salah!');
                     return redirect('auth/login');

@@ -43,7 +43,7 @@ $routes->group('profile', ['filter' => 'authcheck'], function ($routes) {
     $routes->post('update', 'ProfileController::update');
 });
 
-$routes->group('admin', ['filter' => 'authcheck', 'filter' => 'admin-only'], function ($routes) {
+$routes->group('admin', ['filter' => 'authcheck', 'filter' => 'role-checker:1,2,3'], function ($routes) {
     // Create, Read, Update, Delete done
     $routes->get('master_user', 'AdminController::master_user');
     $routes->get('create_user', 'AdminController::create_user');
@@ -67,6 +67,14 @@ $routes->group('admin', ['filter' => 'authcheck', 'filter' => 'admin-only'], fun
     $routes->get('edit_supplier/(:any)', 'SupplierController::edit/$1');
     $routes->post('edit_supplier/(:any)', 'SupplierController::update/$1');
     $routes->get('delete_supplier/(:any)', 'SupplierController::delete/$1');
+
+    // Create, Read Update, Delete done
+    $routes->get('master_product', 'ProductController::index');
+    $routes->get('create_product', 'ProductController::create');
+    $routes->post('create_product', 'ProductController::save');
+    $routes->get('edit_product/(:any)', 'ProductController::edit/$1');
+    $routes->post('edit_product/(:any)', 'ProductController::update/$1');
+    $routes->get('delete_product/(:any)', 'ProductController::delete/$1');
 });
 
 $routes->group('user', ['filter' => 'authcheck'], function ($routes) {
@@ -77,7 +85,8 @@ $routes->group('user', ['filter' => 'authcheck'], function ($routes) {
     $routes->post('change_password', 'HomeController::update_password');
 });
 
-$routes->get('/dashboard', 'HomeController::index', ['filter' => 'authcheck']);
+$routes->get('/dashboard', 'AdminController::index', ['filter' => 'authcheck', 'filter' => 'role-checker:1,2,3,4']);
+$routes->get('/home', 'HomeController::index', ['filter' => 'authcheck', 'filter' => 'role-checker:5']);
 $routes->get('/forbidden', 'AuthController::forbidden');
 /*
  * --------------------------------------------------------------------
