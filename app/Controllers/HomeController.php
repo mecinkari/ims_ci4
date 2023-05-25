@@ -15,13 +15,14 @@ class HomeController extends BaseController
     public function __construct()
     {
         $this->userModel = new User();
-        if (session()->get('user_id')) {
+        if (session()->has('user_id')) {
             $this->userID = session()->get('user_id');
         }
     }
 
     public function index()
     {
+        $this->isLoggedIn();
         $data['title'] = $this->title . '|Dashboard';
         $data['appname'] = $this->title;
         $data['user'] = $this->userModel->find($this->userID);

@@ -87,6 +87,7 @@ class AuthController extends BaseController
     public function logout()
     {
         session()->remove('user_id');
+        session()->remove('order_id');
         session()->setFlashdata('success', 'Berhasil logout!');
         return redirect('auth/login');
     }

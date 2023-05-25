@@ -84,20 +84,31 @@
             </li>
           <?php endforeach ?>
         <?php endif; ?>
-        <?php if ($user['role_id'] == 5) : ?>
+        <?php
+        $customers_menu = [
+          [
+            'site' => 'order',
+            'title' => 'Order',
+          ],
+          [
+            'site' => 'transaction',
+            'title' => 'Transaction',
+          ],
+          [
+            'site' => 'test',
+            'title' => 'Test',
+          ]
+        ];
+        if ($user['role_id'] == 5) : ?>
           <li class="nav-header">CUSTOMER'S MENU</li>
-          <li class="nav-item">
-            <a href="<?= site_url('order') ?>" class="nav-link">
-              <i class="nav-icon fas fa-circle text-primary"></i>
-              <p class="text">Order</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="<?= site_url('transaction') ?>" class="nav-link">
-              <i class="nav-icon fas fa-circle text-primary"></i>
-              <p class="text">Transaksi</p>
-            </a>
-          </li>
+          <?php foreach ($customers_menu as $cus) : ?>
+            <li class="nav-item">
+              <a href="<?= site_url($cus['site']) ?>" class="nav-link">
+                <i class="nav-icon fas fa-circle text-primary"></i>
+                <p class="text"><?= $cus['title'] ?></p>
+              </a>
+            </li>
+          <?php endforeach ?>
         <?php endif ?>
       </ul>
     </nav>

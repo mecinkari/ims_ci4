@@ -6,7 +6,7 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class MyFilter implements FilterInterface
+class AuthChecker implements FilterInterface
 {
     /**
      * Do whatever processing this filter needs to do.
@@ -28,7 +28,7 @@ class MyFilter implements FilterInterface
         //
         $session = \Config\Services::session();
 
-        if (!$session->get('user_id')) {
+        if (!$session->has('user_id')) {
             return redirect()->to('auth/login')->with('error', 'Anda Belum Login!');
         }
     }

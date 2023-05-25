@@ -18,7 +18,9 @@ class AdminController extends BaseController
         $this->userModel = new User();
         $this->roleModel = new Role();
         $this->profileModel = new Profile();
-        $this->userID = session()->get('user_id');
+        if (session()->has('user_id')) {
+            $this->userID = session()->get('user_id');
+        }
     }
 
     public function index()

@@ -47,6 +47,16 @@ abstract class BaseController extends Controller
     /**
      * Constructor.
      */
+
+    public function isLoggedIn()
+    {
+        $session = \Config\Services::session();
+        if (empty(session()->has('user_id'))) {
+            // dd();
+            return redirect()->to('auth/login');
+        }
+    }
+
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
         // Do Not Edit This Line

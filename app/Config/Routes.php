@@ -14,6 +14,7 @@ $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
+$routes->setAutoRoute(false);
 $routes->set404Override();
 // The Auto Routing (Legacy) is very dangerous. It is easy to create vulnerable apps
 // where controller filters or CSRF protection are bypassed.
@@ -38,12 +39,12 @@ $routes->group('auth', function ($routes) {
     $routes->get('logout', 'AuthController::logout');
 });
 
-$routes->group('profile', ['filter' => 'authcheck'], function ($routes) {
+$routes->group('profile', ['filter' => 'auth-checker'], function ($routes) {
     $routes->get('/', 'ProfileController::index');
     $routes->post('update', 'ProfileController::update');
 });
 
-$routes->group('admin', ['filter' => 'authcheck', 'filter' => 'role-checker:1,2,3'], function ($routes) {
+$routes->group('admin', ['filter' => ['auth-checker', 'role-checker:1,2,3']], function ($routes) {
     // Create, Read, Update, Delete done
     $routes->get('master_user', 'AdminController::master_user');
     $routes->get('create_user', 'AdminController::create_user');
@@ -77,7 +78,7 @@ $routes->group('admin', ['filter' => 'authcheck', 'filter' => 'role-checker:1,2,
     $routes->get('delete_product/(:any)', 'ProductController::delete/$1');
 });
 
-$routes->group('user', ['filter' => 'authcheck'], function ($routes) {
+$routes->group('user', ['filter' => 'auth-checker'], function ($routes) {
     $routes->get('/', 'HomeController::user');
     $routes->get('change_username', 'HomeController::change_username');
     $routes->get('change_password', 'HomeController::change_password');
@@ -85,9 +86,23 @@ $routes->group('user', ['filter' => 'authcheck'], function ($routes) {
     $routes->post('change_password', 'HomeController::update_password');
 });
 
-$routes->get('/dashboard', 'AdminController::index', ['filter' => 'authcheck', 'filter' => 'role-checker:1,2,3,4']);
-$routes->get('/home', 'HomeController::index', ['filter' => 'authcheck', 'filter' => 'role-checker:5']);
+$routes->get('/dashboard', 'AdminController::index', ['filter' => ['auth-checker', 'role-checker:1,2,3,4']]);
+$routes->get('/home', 'HomeController::index', ['filter' => ['auth-checker', 'role-checker:5']]);
 $routes->get('/forbidden', 'AuthController::forbidden');
+
+$routes->group('order', ['filter' => ['auth-checker', 'role-checker:5']], function ($routes) {
+    $routes->get('', 'OrderController::index');
+    $routes->get('make', 'OrderController::make');
+    $routes->get('create', 'OrderController::create');
+    $routes->get('cancel', 'OrderController::cancel');
+    $routes->post('get_stock', 'OrderController::getStock');
+    $routes->get('get_all_stock', 'OrderController::getAllStock');
+});
+
+$routes->group('test', ['filter' => ['auth-checker', 'role-checker:5']], function ($routes) {
+    $routes->get('', 'TestController::index');
+    $routes->post('', 'TestController::new');
+});
 /*
  * --------------------------------------------------------------------
  * Additional Routing

@@ -2,7 +2,7 @@
 
 namespace Config;
 
-use App\Filters\MyFilter;
+use App\Filters\AuthChecker;
 use App\Filters\RoleChecker;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
@@ -23,7 +23,7 @@ class Filters extends BaseConfig
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
-        'authcheck' => MyFilter::class,
+        'auth-checker' => AuthChecker::class,
         'role-checker' => RoleChecker::class
     ];
 
@@ -36,6 +36,7 @@ class Filters extends BaseConfig
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
+            // 'auth-checker'
         ],
         'after' => [
             'toolbar',
