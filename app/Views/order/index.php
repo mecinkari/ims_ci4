@@ -39,7 +39,38 @@
           <p>Anda belum membuat sebuah order.</p>
           <a href="<?= site_url('order/make') ?>" class="btn btn-success">Buat Order</a>
         <?php else : ?>
-          <p>Start creating your amazing application!</p>
+          <table class="table table-responsive table-head-fixed text-nowrap">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Jumlah Produk</th>
+                <th>Total Harga</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              $db = \Config\Database::connect();
+              $builder = $db->table('order_details');
+              foreach ($allOrders as $order) : ?>
+                <?php
+                $grand_total = $builder->selectSum('total')->where('order_id', $order['order_id'])->get()->getFirstRow();
+                $count = $builder->selectCount('total', 'count')->where('order_id', $order['order_id'])->get()->getFirstRow();
+                // print_r($count);
+                ?>
+                <tr>
+                  <td><?= $order['order_id'] ?></td>
+                  <td><?= $count->count ?></td>
+                  <td><?= $grand_total->total ?></td>
+                  <td>
+                    <a href="" class="btn btn-primary"><i class="fa fa-fw fa-pen"></i></a>
+                    <a href="<?= site_url('order/view_order/' . $order['order_id']) ?>" class="btn btn-success"><i class="fa fa-fw fa-eye"></i></a>
+                    <a href="<?= site_url('order/delete_order/' . $order['order_id']) ?>" class="btn btn-danger"><i class="fa fa-fw fa-trash"></i></a>
+                  </td>
+                </tr>
+              <?php endforeach ?>
+            </tbody>
+          </table>
         <?php endif ?>
       </div>
       <!-- /.card-body -->

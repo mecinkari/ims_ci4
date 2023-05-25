@@ -94,8 +94,12 @@ $routes->group('order', ['filter' => ['auth-checker', 'role-checker:5']], functi
     $routes->get('', 'OrderController::index');
     $routes->get('make', 'OrderController::make');
     $routes->get('create', 'OrderController::create');
+    $routes->post('create', 'OrderController::save');
     $routes->get('cancel', 'OrderController::cancel');
-    $routes->post('get_stock', 'OrderController::getStock');
+    $routes->get('view_order/(:any)', 'OrderController::view/$1');
+    $routes->get('cancel_temp', 'OrderController::cancel_temp');
+    $routes->get('delete_order/(:any)', 'OrderController::delete/$1');
+    $routes->post('get_stock', 'OrderController::get_stock');
     $routes->get('get_all_stock', 'OrderController::getAllStock');
 });
 

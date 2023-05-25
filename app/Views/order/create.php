@@ -74,6 +74,12 @@
                   </div>
                 </div>
                 <div class="form-group row">
+                  <label for="" class="col-sm-2 col-form-label">Harga Produk</label>
+                  <div class="col-sm-10">
+                    <input type="number" disabled value="0" id="price" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group row">
                   <label for="" class="col-sm-2 col-form-label">Jumlah Produk yang Akan Dibeli</label>
                   <div class="col-sm-10">
                     <input type="number" name="qty" min="1" id="qty" value="1" class="form-control">
@@ -86,21 +92,29 @@
             <div class="offset-sm-2 col-sm-10"><button type="button" id="addBtn" class="btn btn-success">Tambah Produk</button></div>
           </div>
           <div class="form-group row">
-            <div class="offset-sm-2 col-sm-10"><button type="button" id="cancel" class="btn btn-danger">Batalkan Order</button></div>
+            <div class="offset-sm-2 col-sm-10">
+              <button type="button" id="cancel" class="btn btn-outline-danger">Batalkan Order</button>
+            </div>
           </div>
         </form>
 
-        <table class="table table-head-fixed text-nowrap">
-          <thead>
-            <th>No</th>
-            <th>Nama Produk</th>
-            <th>Kuantiti</th>
-            <th>Aksi</th>
-          </thead>
-          <tbody id="addedRow">
+        <form action="<?= site_url('order/create') ?>" method="post">
+          <table class="table table-head-fixed text-nowrap">
+            <thead>
+              <th>No</th>
+              <th>Nama Produk</th>
+              <th>Kuantiti</th>
+              <th>Total</th>
+              <th>Aksi</th>
+            </thead>
+            <tbody id="addedRow">
 
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+          <div class="form-group mt-3">
+            <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+          </div>
+        </form>
       </div>
       <!-- /.card-body -->
       <!-- /.card-footer-->
@@ -118,6 +132,16 @@
   $(document).ready(function() {
     let forms = 1;
 
+    $('.submit-btn').hide();
+
+    function submitBtn() {
+      if ($('#addedRow tr').length == 0) {
+        $('.submit-btn').hide();
+      } else {
+        $('.submit-btn').show();
+      }
+    }
+
     $('#cancel').click(function() {
       if (confirm('Batalkan order yang sedang berlangsung?') == true) {
         window.location.replace("<?= site_url('order/cancel') ?>")
@@ -133,32 +157,47 @@
 
       $('#qty').val(1);
 
+      let product = e.target.value;
+      let product_id = product.split("-");
+
       $.post('<?= site_url('order/get_stock') ?>', {
-        'product_id': e.target.value,
-      }, function(data, status) {
+        'product_id': product_id[0],
+      }, function(res, status) {
+        data = JSON.parse(res);
         // alert("Data: " + data + "\nStatus: " + status)
-        $('#stock').text(data);
-        $('#qty').attr('max', data);
+        // console.log(JSON.parse(data));
+        $('#qty').attr('max', data.stock);
+        $('#stock').text(data.stock);
+        $('#price').val(data.price);
       });
     })
 
 
     $('#addBtn').click(function() {
       let product_id = $('#productID').val();
+      let qty = $('#qty').val();
+      let price = $('#price').val();
+      let total = qty * price;
       product = product_id.split("-");
 
-      let el = `<tr id=form-${forms}>
+      let el = `<tr data-id="${forms}">
               <td>${forms}</td>
-              <td><input class="form-control" type="text" value="${product[1]}"></td>
-              <td><input class="form-control" type="number" value="0"></td>
-              <td><button type="button" class="btn btn-danger">&cross;</button></td>
+              <td><input type="hidden" name="product_id[]" value="${product[0]}" ><input class="form-control" disabled type="text" value="${product[1]}"></td>
+              <td><input class="form-control" readonly name="qty[]" type="number" value="${qty}"></td>
+              <td><input class="form-control" readonly name="total[]" type="number" value="${total}"></td>
+              <td><button type="button" data-close="${forms}" class="btn btn-danger close-btn">&cross;</button></td>
             </tr>`
 
       $('#addedRow').append(el);
 
       forms++;
+      submitBtn();
     })
 
+    $('#addedRow').on('click', '.close-btn', function(e) {
+      $(`[data-id=${e.target.getAttribute('data-close')}]`).remove()
+      submitBtn();
+    })
   });
 </script>
 <?= $this->endSection() ?>

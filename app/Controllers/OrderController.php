@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\Category;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\User;
 
@@ -12,7 +13,7 @@ class OrderController extends BaseController
 {
     private $title = 'IMS';
 
-    private $userModel, $orderModel, $productModel, $categoryModel;
+    private $userModel, $orderModel, $productModel, $categoryModel, $orderDetailModel;
     private $userID;
 
     public function __construct()
@@ -21,6 +22,7 @@ class OrderController extends BaseController
         $this->orderModel = new Order();
         $this->productModel = new Product();
         $this->categoryModel = new Category();
+        $this->orderDetailModel = new OrderDetail();
         if (session()->has('user_id')) {
             $this->userID = session()->get('user_id');
         }
@@ -74,6 +76,51 @@ class OrderController extends BaseController
         return redirect()->to('order')->with('success', 'Order berhasil dibatalkan');
     }
 
+    public function cancel_temp()
+    {
+        session()->remove('order_id');
+        return redirect()->to('order')->with('success', 'Order berhasil dibatalkan');
+    }
+
+    public function save()
+    {
+        $db = \Config\Database::connect();
+
+        $product_id = $this->request->getPost('product_id');
+        $qty = $this->request->getPost('qty');
+        $total = $this->request->getPost('total');
+
+        for ($i = 0; $i < count($product_id); $i++) {
+            $data = [
+                'order_detail_id' => string_generator(20),
+                'qty' => $qty[$i],
+                'total' => $total[$i],
+                'order_id' => session()->get('order_id'),
+                'product_id' => $product_id[$i],
+            ];
+            $db->table('order_details')->insert($data);
+        }
+        session()->remove('order_id');
+        return redirect()->to('order')->with('success', 'Order berhasil ditambahkan');
+    }
+
+    public function view($id = null)
+    {
+        $data['title'] = $this->title . '|Lihat Order';
+        $data['appname'] = $this->title;
+        $data['user'] = $this->userModel->find($this->userID);
+        $data['order_details'] = $this->orderDetailModel->join('products', 'products.product_id = order_details.product_id')->findAll();
+        // dd($data['order_detail']);
+
+        return view('order/view', $data);
+    }
+
+    public function delete($id = null)
+    {
+        $this->orderModel->delete($id);
+        return redirect()->to('order')->with('success', 'Order berhasil dibatalkan');
+    }
+
     public function getAllStock()
     {
         // $id = $this->request->getPost('product_id');
@@ -81,10 +128,14 @@ class OrderController extends BaseController
         return json_encode($stock);
     }
 
-    public function getStock()
+    public function get_stock()
     {
         $id = $this->request->getPost('product_id');
         $stock = $this->productModel->find($id);
-        return $stock['product_qty'];
+        $data = [
+            'stock' => $stock['product_qty'],
+            'price' => $stock['product_price']
+        ];
+        return json_encode($data);
     }
 }
