@@ -63,7 +63,7 @@
                   <td><?= $count->count ?></td>
                   <td><?= $grand_total->total ?></td>
                   <td>
-                    <a href="" class="btn btn-primary"><i class="fa fa-fw fa-pen"></i></a>
+                    <a href="<?= site_url('order/edit_order/' . $order['order_id']) ?>" class="btn btn-primary"><i class="fa fa-fw fa-pen"></i></a>
                     <a href="<?= site_url('order/view_order/' . $order['order_id']) ?>" class="btn btn-success"><i class="fa fa-fw fa-eye"></i></a>
                     <a href="<?= site_url('order/delete_order/' . $order['order_id']) ?>" class="btn btn-danger"><i class="fa fa-fw fa-trash"></i></a>
                   </td>

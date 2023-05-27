@@ -23,6 +23,7 @@ class OrderController extends BaseController
         $this->productModel = new Product();
         $this->categoryModel = new Category();
         $this->orderDetailModel = new OrderDetail();
+
         if (session()->has('user_id')) {
             $this->userID = session()->get('user_id');
         }
@@ -30,112 +31,81 @@ class OrderController extends BaseController
 
     public function index()
     {
-        //
-        if (session()->get('order_id')) {
-            return redirect()->to('order/create')->with('error', 'Silahkan selesaikan dulu order anda.');
-        }
-        $data['title'] = $this->title . '|Orders';
+        $data['title'] = $this->title . '|My Orders';
         $data['appname'] = $this->title;
         $data['user'] = $this->userModel->find($this->userID);
-        $data['allOrders'] = $this->orderModel->findAll();
+        $data['orders'] = $this->orderModel->findAll();
 
-        return view('order/index', $data);
+        return view('new_order/index', $data);
     }
 
     public function make()
     {
-        $order_id = string_generator(30);
-        $user_id = $this->userID;
-
-        $data = [
-            'order_id' => $order_id,
-            'user_id' => $user_id
-        ];
-
-        $this->orderModel->insert($data);
+        $order_id = string_generator(20);
         session()->set('order_id', $order_id);
-        return redirect()->to('order/create')->with('success', 'Berhasil membuat sebuah order');
+        return redirect()->to('order/create');
+    }
+
+    public function save_order()
+    {
+        session()->remove('order_id');
+        return redirect()->to('order')->with('success', 'Data order telah disimpan!');
     }
 
     public function create()
     {
-        $data['title'] = $this->title . '|Buat Order';
+        if (!session()->has('order_id')) {
+            return redirect()->to('order');
+        }
+
+        $data['title'] = $this->title . '|Create Order';
         $data['appname'] = $this->title;
         $data['user'] = $this->userModel->find($this->userID);
-        $data['allProducts'] = $this->productModel->findAll();
-        $data['allCategories'] = $this->categoryModel->findAll();
+        $data['categories'] = $this->categoryModel->findAll();
 
-        return view('order/create', $data);
-    }
-
-    public function cancel()
-    {
-        $order_id = session()->get('order_id');
-        session()->remove('order_id');
-        $this->orderModel->delete($order_id);
-        return redirect()->to('order')->with('success', 'Order berhasil dibatalkan');
-    }
-
-    public function cancel_temp()
-    {
-        session()->remove('order_id');
-        return redirect()->to('order')->with('success', 'Order berhasil dibatalkan');
+        return view('new_order/create', $data);
     }
 
     public function save()
     {
-        $db = \Config\Database::connect();
+        $order_id = session()->get('order_id');
+        $user_id = session()->get('user_id');
+
+        if (empty($this->orderModel->find($order_id))) {
+            $data['new_order'] = [
+                'order_id' => $order_id,
+                'user_id' => $user_id,
+            ];
+
+            $this->orderModel->insert($data['new_order']);
+        }
 
         $product_id = $this->request->getPost('product_id');
-        $qty = $this->request->getPost('qty');
-        $total = $this->request->getPost('total');
+        $product = $this->productModel->find($product_id);
 
-        for ($i = 0; $i < count($product_id); $i++) {
-            $data = [
-                'order_detail_id' => string_generator(20),
-                'qty' => $qty[$i],
-                'total' => $total[$i],
-                'order_id' => session()->get('order_id'),
-                'product_id' => $product_id[$i],
-            ];
-            $db->table('order_details')->insert($data);
-        }
-        session()->remove('order_id');
-        return redirect()->to('order')->with('success', 'Order berhasil ditambahkan');
+        $data['new_order_details'] = [
+            'order_detail_id' => string_generator(20),
+            'qty' => $this->request->getPost('qty'),
+            'discount' => 0,
+            'total' => $this->request->getPost('total'),
+            'order_id' => $order_id,
+            'product_id' => $product_id,
+        ];
+
+        $this->orderDetailModel->insert($data['new_order_details']);
+        $this->productModel->update($product_id, [
+            'product_qty' => ((int) $product['product_qty'] - (int) $this->request->getPost('qty'))
+        ]);
     }
 
-    public function view($id = null)
+    public function view_details($id = null)
     {
-        $data['title'] = $this->title . '|Lihat Order';
+        $data['title'] = $this->title . '|View Order Details';
         $data['appname'] = $this->title;
         $data['user'] = $this->userModel->find($this->userID);
-        $data['order_details'] = $this->orderDetailModel->join('products', 'products.product_id = order_details.product_id')->findAll();
-        // dd($data['order_detail']);
+        $data['categories'] = $this->categoryModel->findAll();
+        $data['order_details'] = $this->orderDetailModel->join('products', 'products.product_id = order_details.product_id')->where('order_id', $id)->findAll();
 
-        return view('order/view', $data);
-    }
-
-    public function delete($id = null)
-    {
-        $this->orderModel->delete($id);
-        return redirect()->to('order')->with('success', 'Order berhasil dibatalkan');
-    }
-
-    public function getAllStock()
-    {
-        // $id = $this->request->getPost('product_id');
-        $stock = $this->productModel->findAll();
-        return json_encode($stock);
-    }
-
-    public function get_stock()
-    {
-        $id = $this->request->getPost('product_id');
-        $stock = $this->productModel->find($id);
-        $data = [
-            'stock' => $stock['product_qty'],
-            'price' => $stock['product_price']
-        ];
-        return json_encode($data);
+        return view('new_order/details', $data);
     }
 }

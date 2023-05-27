@@ -90,17 +90,18 @@ $routes->get('/dashboard', 'AdminController::index', ['filter' => ['auth-checker
 $routes->get('/home', 'HomeController::index', ['filter' => ['auth-checker', 'role-checker:5']]);
 $routes->get('/forbidden', 'AuthController::forbidden');
 
+$routes->group('api', ['filter' => 'auth-checker'], function ($routes) {
+    $routes->get('get_all_products', 'ApiController::get_all_products');
+    $routes->get('get_product_detail/(:any)', 'ApiController::get_product_detail/$1');
+});
+
 $routes->group('order', ['filter' => ['auth-checker', 'role-checker:5']], function ($routes) {
     $routes->get('', 'OrderController::index');
-    $routes->get('make', 'OrderController::make');
     $routes->get('create', 'OrderController::create');
-    $routes->post('create', 'OrderController::save');
-    $routes->get('cancel', 'OrderController::cancel');
-    $routes->get('view_order/(:any)', 'OrderController::view/$1');
-    $routes->get('cancel_temp', 'OrderController::cancel_temp');
-    $routes->get('delete_order/(:any)', 'OrderController::delete/$1');
-    $routes->post('get_stock', 'OrderController::get_stock');
-    $routes->get('get_all_stock', 'OrderController::getAllStock');
+    $routes->get('make', 'OrderController::make');
+    $routes->post('save', 'OrderController::save');
+    $routes->get('save_order', 'OrderController::save_order');
+    $routes->get('view_details/(:any)', 'OrderController::view_details/$1');
 });
 
 $routes->group('test', ['filter' => ['auth-checker', 'role-checker:5']], function ($routes) {

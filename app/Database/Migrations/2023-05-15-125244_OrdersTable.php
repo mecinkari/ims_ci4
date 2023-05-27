@@ -16,6 +16,7 @@ class OrdersTable extends Migration
         $this->forge->addField([
             'order_id' => $tbl->field('VARCHAR', 128),
             'user_id' => $tbl->field('VARCHAR', 128),
+            'order_status' => $tbl->field('INT', 1),
             'created_at' => $tbl->field('TIMESTAMP'),
             'updated_at' => $tbl->field('TIMESTAMP'),
         ]);
