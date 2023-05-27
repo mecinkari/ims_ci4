@@ -105,6 +105,7 @@ class OrderController extends BaseController
         $data['user'] = $this->userModel->find($this->userID);
         $data['categories'] = $this->categoryModel->findAll();
         $data['order_details'] = $this->orderDetailModel->join('products', 'products.product_id = order_details.product_id')->where('order_id', $id)->findAll();
+        $data['total'] = $this->orderDetailModel->selectSum('total', 'total')->where('order_id', $id)->first()['total'];
 
         return view('new_order/details', $data);
     }

@@ -29,32 +29,7 @@
       <div class="card-header">
         <h3 class="card-title">Title</h3>
       </div>
-      <div class="card-body">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Nama Produk</th>
-              <th>Harga Produk</th>
-              <th>Jumlah Barang Dipesan</th>
-              <th>Sub Total Harga</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($order_details as $od) : ?>
-              <tr>
-                <td><?= $od['product_name'] ?></td>
-                <td>Rp<?= number_format($od['product_price'], 2) ?></td>
-                <td><?= $od['qty'] ?></td>
-                <td>Rp<?= number_format($od['total'], 2) ?></td>
-              </tr>
-            <?php endforeach ?>
-            <tr>
-              <th colspan="3" class="text-center">Total</th>
-              <td>Rp<?= number_format($total, 2) ?></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="card-body"></div>
       <!-- /.card-body -->
       <div class="card-footer">Footer</div>
       <!-- /.card-footer-->

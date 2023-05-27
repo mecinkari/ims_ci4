@@ -30,9 +30,12 @@
         <h3 class="card-title">Title</h3>
       </div>
       <div class="card-body">
-        <?php if (empty($orders)) : ?>
-          <a href="<?= site_url('order/make') ?>" class="btn btn-success">Tambah Order</a>
-        <?php endif; ?>
+        <?php //if (empty($orders)) : 
+        ?>
+        <!-- <a href="" class="btn btn-success">Tambah Order</a> -->
+        <?php //endif; 
+        ?>
+        <a href="<?= site_url('order/make') ?>" class="btn btn-success">Tambah Order</a>
         <table class="table">
           <thead>
             <tr>

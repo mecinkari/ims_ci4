@@ -3,18 +3,22 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\User;
 
 class HomeController extends BaseController
 {
     private $title = 'IMS';
 
-    private $userModel;
+    private $userModel, $orderModel, $orderDetailModel;
     private $userID;
 
     public function __construct()
     {
         $this->userModel = new User();
+        $this->orderModel = new Order();
+        $this->orderDetailModel = new OrderDetail();
         if (session()->has('user_id')) {
             $this->userID = session()->get('user_id');
         }
@@ -26,6 +30,15 @@ class HomeController extends BaseController
         $data['title'] = $this->title . '|Dashboard';
         $data['appname'] = $this->title;
         $data['user'] = $this->userModel->find($this->userID);
+        $data['total_orders'] = $this->orderModel->selectCount('order_id', 'total_orders')->where('order_status =', 0)->first()['total_orders'];
+
+        $data['total_payment'] = (int) $this->orderDetailModel
+            ->selectSum('total', 'total')
+            ->join('orders', 'order_details.order_id = orders.order_id')
+            ->where('orders.user_id', $this->userID)
+            ->where('orders.order_status =', 0)
+            ->first()['total'];
+        // dd($data['total_payment']);
 
         return view('home/index', $data);
     }

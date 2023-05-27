@@ -101,6 +101,7 @@ $routes->group('order', ['filter' => ['auth-checker', 'role-checker:5']], functi
     $routes->get('make', 'OrderController::make');
     $routes->post('save', 'OrderController::save');
     $routes->get('save_order', 'OrderController::save_order');
+    $routes->get('cancel_order/(:any)', 'OrderController::cancel_order/$1');
     $routes->get('view_details/(:any)', 'OrderController::view_details/$1');
 });
 
