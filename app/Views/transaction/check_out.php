@@ -16,7 +16,12 @@
         <div class="col-sm-6">
           <h1><?= $title ?></h1>
         </div>
-
+        <!-- <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Blank Page</li>
+          </ol>
+        </div> -->
       </div>
     </div>
     <!-- /.container-fluid -->
@@ -27,30 +32,39 @@
     <!-- Default box -->
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">Title</h3>
+        <h3 class="card-title">Order ID: <?= $transaction_id ?></h3>
       </div>
       <div class="card-body">
         <table class="table">
           <thead>
             <tr>
-              <th>Order ID</th>
-              <th>Total Price Order</th>
-              <th>Aksi</th>
+              <th>Nama Produk</th>
+              <th>Harga Produk</th>
+              <th>Jumlah Barang Dipesan</th>
+              <th>Sub Total Harga</th>
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($orders as $o) : ?>
+            <?php foreach ($order_details as $od) : ?>
               <tr>
-                <td><?= $o['order_id'] ?></td>
-                <td>Rp<?= number_format((float) $o['grand_total'], 0, ',', '.') ?></td>
-                <td><a href="<?= site_url('transaction/check_out/' . $o['order_id']) ?>" class="btn btn-primary">Check Out</a></td>
+                <td><?= $od['product_name'] ?></td>
+                <td>Rp<?= number_format($od['product_price'], 2) ?></td>
+                <td><?= $od['qty'] ?></td>
+                <td>Rp<?= number_format($od['total'], 2) ?></td>
               </tr>
             <?php endforeach ?>
+            <tr>
+              <th colspan="3" class="text-center">Total</th>
+              <td>Rp<?= number_format($total, 2) ?></td>
+            </tr>
           </tbody>
         </table>
       </div>
       <!-- /.card-body -->
-      <div class="card-footer">Footer</div>
+      <div class="card-footer">
+        <p>Pay</p>
+        <a href="<?= site_url('transaction/check_out_now/' . $transaction_id) ?>" class="btn btn-success">Check Out Now!</a>
+      </div>
       <!-- /.card-footer-->
     </div>
     <!-- /.card -->

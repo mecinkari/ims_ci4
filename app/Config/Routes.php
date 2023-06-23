@@ -105,6 +105,12 @@ $routes->group('order', ['filter' => ['auth-checker', 'role-checker:5']], functi
     $routes->get('view_details/(:any)', 'OrderController::view_details/$1');
 });
 
+$routes->group('transaction', ['filter' => ['auth-checker', 'role-checker:5']], function ($routes) {
+    $routes->get('', 'TransactionController::index');
+    $routes->get('check_out/(:any)', 'TransactionController::check_out/$1');
+    $routes->get('check_out_now/(:any)', 'TransactionController::check_out_now/$1');
+});
+
 $routes->group('test', ['filter' => ['auth-checker', 'role-checker:5']], function ($routes) {
     $routes->get('', 'TestController::index');
     $routes->post('', 'TestController::new');

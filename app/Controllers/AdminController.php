@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Profile;
 use App\Models\Role;
 use App\Models\User;
@@ -11,12 +13,14 @@ class AdminController extends BaseController
 {
     private $title = 'IMS';
 
-    private $userModel, $roleModel, $profileModel, $userID;
+    private $userModel, $roleModel, $profileModel, $userID, $orderModel, $orderDetailModel;
 
     public function __construct()
     {
         $this->userModel = new User();
         $this->roleModel = new Role();
+        $this->orderModel = new Order();
+        $this->orderDetailModel = new OrderDetail();
         $this->profileModel = new Profile();
         if (session()->has('user_id')) {
             $this->userID = session()->get('user_id');
@@ -29,7 +33,7 @@ class AdminController extends BaseController
         $data['appname'] = $this->title;
         $data['user'] = $this->userModel->find($this->userID);
 
-        return view('home/index', $data);
+        return view('admin/dashboard', $data);
     }
 
     public function master_user()

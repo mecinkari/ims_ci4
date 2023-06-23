@@ -93,9 +93,9 @@ class OrderController extends BaseController
         ];
 
         $this->orderDetailModel->insert($data['new_order_details']);
-        $this->productModel->update($product_id, [
-            'product_qty' => ((int) $product['product_qty'] - (int) $this->request->getPost('qty'))
-        ]);
+        // $this->productModel->update($product_id, [
+        //     'product_qty' => ((int) $product['product_qty'] - (int) $this->request->getPost('qty'))
+        // ]);
     }
 
     public function view_details($id = null)
