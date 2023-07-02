@@ -69,10 +69,27 @@ class TransactionController extends BaseController
             $product_id = $d['product_id'];
             $product = $this->productModel->where('product_id', $product_id)->find();
             foreach ($product as $p) {
-                print_r($p['product_qty'] . "-" . $d['qty'] . "=" . ((int)$p['product_qty'] - (int)$d['qty']));
-                // $this->productModel->update($product_id, [
-                //     'product_qty' => ((int) $p['product_qty'] - (int)$d['qty'])
-                // ]);
+                // print_r($p['product_qty'] . "-" . $d['qty'] . "=" . ((int)$p['product_qty'] - (int)$d['qty']));
+                // print_r($p);
+                $this->productModel->update($product_id, [
+                    'product_qty' => ((int) $p['product_qty'] - (int)$d['qty'])
+                ]);
+
+                $new_data = array(
+                    'transaction_id' => string_generator(),
+                    'order_id' => $id,
+                    'user_id' => session()->get('user_id'),
+                    'grand_total' => $this->orderDetailModel->selectSum('total', 'total')->where('order_id', $id)->first()['total'],
+                    'status' => 1
+                );
+
+                $this->orderModel->update($id, [
+                    'order_status' => 1
+                ]);
+
+                $this->transactionModel->insert($new_data);
+
+                return redirect()->to('home')->with('success', 'Berhasil melakukan transaksi!');
             }
         }
     }

@@ -29,7 +29,7 @@
       <div class="card-header">
         <h3 class="card-title">Title</h3>
       </div>
-      <div class="card-body table-responsive p-0" style="height: 300px;">
+      <div class="card-body table-responsive p-0" style="height: 640px;">
         <div class="p-3">
           <a href="<?= site_url('admin/create_user') ?>" class="btn btn-success"><i class="fa fa-plus"></i> Tambah User</a>
         </div>

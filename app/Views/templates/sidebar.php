@@ -71,6 +71,11 @@
               'title' => 'Master Product',
               'url' => 'admin/master_product',
               'icon' => 'fa fa-cube'
+            ],
+            [
+              'title' => 'Master Transaction',
+              'url' => 'admin/master_transaction',
+              'icon' => 'fa fa-bill'
             ]
           ]
           ?>

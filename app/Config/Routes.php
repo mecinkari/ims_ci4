@@ -76,6 +76,9 @@ $routes->group('admin', ['filter' => ['auth-checker', 'role-checker:1,2,3']], fu
     $routes->get('edit_product/(:any)', 'ProductController::edit/$1');
     $routes->post('edit_product/(:any)', 'ProductController::update/$1');
     $routes->get('delete_product/(:any)', 'ProductController::delete/$1');
+
+    // master transction
+    $routes->get('master_product', 'TransctionController::master_transaction');
 });
 
 $routes->group('user', ['filter' => 'auth-checker'], function ($routes) {

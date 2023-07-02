@@ -45,10 +45,17 @@ class AdminController extends BaseController
         $data['appname'] = $this->title;
         $data['user'] = $this->userModel->find($this->userID);
 
+        $user = $this->userModel->where('user_id', session('user_id'))->first();
+
+        // dd($user['role_id']);
+
         $builder = $db->table('users');
         $builder->select('users.user_id, users.user_name, roles.role_name');
         $builder->join('roles', 'users.role_id = roles.role_id');
         $builder->where('users.user_id !=', $this->userID);
+        if ($user['role_id'] == '3' || $user['role_id'] == '4') {
+            $builder->where('users.role_id !=', 1);
+        }
         $data['allUsers'] = $builder->get()->getResult();
         echo view('admin/master_user', $data);
     }
