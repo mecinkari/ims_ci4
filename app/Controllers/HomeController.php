@@ -30,7 +30,7 @@ class HomeController extends BaseController
         $data['title'] = $this->title . '|Dashboard';
         $data['appname'] = $this->title;
         $data['user'] = $this->userModel->find($this->userID);
-        $data['total_orders'] = $this->orderModel->selectCount('order_id', 'total_orders')->where('order_status =', 0)->first()['total_orders'];
+        $data['total_orders'] = $this->orderModel->selectCount('order_id', 'total_orders')->where('order_status =', 0)->where('user_id', session()->get('user_id'))->first()['total_orders'];
 
         $data['total_payment'] = (int) $this->orderDetailModel
             ->selectSum('total', 'total')

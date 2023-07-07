@@ -29,9 +29,7 @@ class AdminController extends BaseController
 
     public function index()
     {
-        $data['title'] = $this->title . '|Dashboard';
-        $data['appname'] = $this->title;
-        $data['user'] = $this->userModel->find($this->userID);
+        $data = $this->static_data('Dashboard');
 
         return view('admin/dashboard', $data);
     }
@@ -41,9 +39,7 @@ class AdminController extends BaseController
         //
         $db = \Config\Database::connect();
 
-        $data['title'] = $this->title . '|Master User';
-        $data['appname'] = $this->title;
-        $data['user'] = $this->userModel->find($this->userID);
+        $data = $this->static_data('Master User');
 
         $user = $this->userModel->where('user_id', session('user_id'))->first();
 
@@ -63,18 +59,14 @@ class AdminController extends BaseController
     public function create_user()
     {
 
-        $data['title'] = $this->title . '|Create User';
-        $data['appname'] = $this->title;
-        $data['user'] = $this->userModel->find($this->userID);
+        $data = $this->static_data('Create User');
         $data['roles'] = $this->roleModel->findAll();
         echo view("admin/create_user", $data);
     }
 
     public function save_user()
     {
-        $data['title'] = $this->title . '|Create User';
-        $data['appname'] = $this->title;
-        $data['user'] = $this->userModel->find($this->userID);
+        $data = $this->static_data('Create User');
         $data['roles'] = $this->roleModel->findAll();
 
         $validation_rules = [
@@ -122,10 +114,7 @@ class AdminController extends BaseController
         role_check($this->userID, [1, 2, 3]);
 
         $user = $this->userModel->find($id);
-
-        $data['title'] = $this->title . '|Edit User ' . $user['user_name'];
-        $data['appname'] = $this->title;
-        $data['user'] = $this->userModel->find($this->userID);
+        $data = $this->static_data('Edit User ' . $user['user_name']);
         $data['roles'] = $this->roleModel->findAll();
         $data['data_user'] = $user;
         echo view("admin/edit_user", $data);
@@ -152,5 +141,45 @@ class AdminController extends BaseController
         $this->roleModel->where('user_id', $id)->delete();
         $this->userModel->delete($id);
         return redirect('admin/master_user')->with('success', 'User berhasil dihapus dari database!');
+    }
+
+    public function master_orders()
+    {
+        $data = $this->static_data('Master Orders');
+
+        $data['all_orders'] = $this->orderModel
+            ->join('profiles', 'profiles.user_id = orders.user_id')
+            ->orderBy('orders.created_at', 'asc')
+            ->findAll();
+        // dd($data['all_orders']);
+        return view('admin/master_orders', $data);
+    }
+
+    public function edit_status_order($order_id)
+    {
+        $data = $this->static_data('Update Status Order');
+        $data['order'] = $this->orderModel->where('order_id', $order_id)->first();
+        // dd($data['order']);
+        return view('admin/update_status_order', $data);
+    }
+
+    public function update_status_order($order_id)
+    {
+        $new_update_data = array(
+            'order_status' => $this->request->getPost('order_status')
+        );
+
+        $this->orderModel->update($order_id, $new_update_data);
+
+        return redirect('admin/master_orders')->with('success', 'Status Order "' . $order_id . '" telah berhasil di-update!');
+    }
+
+    public function static_data($title)
+    {
+        return array(
+            'title' => $this->title . '|' . $title,
+            'appname' => $this->title,
+            'user' => $this->userModel->find($this->userID)
+        );
     }
 }

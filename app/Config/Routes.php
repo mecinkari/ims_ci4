@@ -78,7 +78,12 @@ $routes->group('admin', ['filter' => ['auth-checker', 'role-checker:1,2,3']], fu
     $routes->get('delete_product/(:any)', 'ProductController::delete/$1');
 
     // master transction
-    $routes->get('master_product', 'TransctionController::master_transaction');
+    $routes->get('master_transaction', 'TransactionController::master_transaction');
+
+    //master orders
+    $routes->get('master_orders', 'AdminController::master_orders');
+    $routes->get('update_status_order/(:any)', 'AdminController::edit_status_order/$1');
+    $routes->post('update_status_order/(:any)', 'AdminController::update_status_order/$1');
 });
 
 $routes->group('user', ['filter' => 'auth-checker'], function ($routes) {
@@ -98,7 +103,7 @@ $routes->group('api', ['filter' => 'auth-checker'], function ($routes) {
     $routes->get('get_product_detail/(:any)', 'ApiController::get_product_detail/$1');
 });
 
-$routes->group('order', ['filter' => ['auth-checker', 'role-checker:5']], function ($routes) {
+$routes->group('order', ['filter' => ['auth-checker', 'role-checker:1,2,3,5']], function ($routes) {
     $routes->get('', 'OrderController::index');
     $routes->get('create', 'OrderController::create');
     $routes->get('make', 'OrderController::make');

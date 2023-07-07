@@ -28,6 +28,15 @@ class TransactionController extends BaseController
         }
     }
 
+    public function master_transaction()
+    {
+        $data['transactions'] = $this->transactionModel->join('profiles', 'profiles.user_id = transactions.user_id')->select(
+            'transactions.transaction_id, transactions.order_id, transactions.user_id, transactions.grand_total, transactions.status, transactions.created_at, ' .
+                'profiles.full_name, profiles.no_hp, profiles.email'
+        )->findAll();
+        dd($data['transactions']);
+    }
+
     public function index()
     {
         //
@@ -40,6 +49,7 @@ class TransactionController extends BaseController
             ->selectSum('total', 'grand_total')
             ->join('order_details', 'orders.order_id = order_details.order_id')
             ->where('order_status', 0)
+            ->where('user_id', session()->get('user_id'))
             ->groupBy('orders.order_id')
             ->findAll();
 

@@ -50,14 +50,22 @@
                 <td><?= $or['order_id'] ?></td>
                 <td>
                   <?php if ($or['order_status'] == 0) : ?>
-                    <span class="badge badge-danger">Not Paid</span>
-                  <?php else : ?>
-                    <span class="badge badge-success">Paid</span>
+                    <span class="badge badge-danger">Belum Bayar</span>
+                  <?php elseif ($or['order_status'] == 1) : ?>
+                    <span class="badge badge-warning">Bayar Parsial</span>
+                  <?php elseif ($or['order_status'] == 2) : ?>
+                    <span class="badge badge-success">Bayar Full</span>
+                  <?php elseif ($or['order_status'] == 3) : ?>
+                    <span class="badge badge-primary">Dalam Pengiriman</span>
+                  <?php elseif ($or['order_status'] == 4) :  ?>
+                    <span class="badge badge-success">Sudah Sampai</span>
                   <?php endif ?>
                 </td>
                 <td>
                   <a href="<?= site_url('order/view_details/' . $or['order_id']) ?>" class="btn btn-success"><i class="fa fa-eye"></i> Lihat Order</a>
-                  <a href="#" class="btn btn-danger"><i class="fa fa-trash"></i> Batalkan Order</a>
+                  <?php if (in_array($or['order_status'], ['0', '1'])) : ?>
+                    <a href="<?= site_url('order/cancel_order/' . $or['order_id']) ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Batalkan Order</a>
+                  <?php endif ?>
                 </td>
               </tr>
             <?php endforeach; ?>

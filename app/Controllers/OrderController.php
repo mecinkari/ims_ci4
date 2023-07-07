@@ -34,7 +34,7 @@ class OrderController extends BaseController
         $data['title'] = $this->title . '|My Orders';
         $data['appname'] = $this->title;
         $data['user'] = $this->userModel->find($this->userID);
-        $data['orders'] = $this->orderModel->findAll();
+        $data['orders'] = $this->orderModel->where('user_id', session()->get('user_id'))->findAll();
 
         return view('new_order/index', $data);
     }
@@ -93,9 +93,9 @@ class OrderController extends BaseController
         ];
 
         $this->orderDetailModel->insert($data['new_order_details']);
-        // $this->productModel->update($product_id, [
-        //     'product_qty' => ((int) $product['product_qty'] - (int) $this->request->getPost('qty'))
-        // ]);
+        $this->productModel->update($product_id, [
+            'product_qty' => ((int) $product['product_qty'] - (int) $this->request->getPost('qty'))
+        ]);
     }
 
     public function view_details($id = null)
@@ -108,5 +108,25 @@ class OrderController extends BaseController
         $data['total'] = $this->orderDetailModel->selectSum('total', 'total')->where('order_id', $id)->first()['total'];
 
         return view('new_order/details', $data);
+    }
+
+    public function cancel_order($id = null)
+    {
+        $old_data = $this->orderDetailModel->where('order_id', $id)->find();
+        foreach ($old_data as $key => $value) {
+            $old_qty = (int) $value['qty'];
+            $product = $this->productModel->where('product_id', $value['product_id'])->first();
+            $return_qty = (int) $product['product_qty'] + $old_qty;
+
+            $new_data = array(
+                'product_qty' => $return_qty
+            );
+
+            $this->productModel->update($value['product_id'], $new_data);
+        }
+
+        $this->orderDetailModel->where('order_id', $id)->delete();
+        $this->orderModel->delete($id);
+        return redirect()->to('order')->with('success', 'Order dibatalkan!');
     }
 }

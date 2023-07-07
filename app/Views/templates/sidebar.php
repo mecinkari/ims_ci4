@@ -73,6 +73,11 @@
               'icon' => 'fa fa-cube'
             ],
             [
+              'title' => 'Master Orders',
+              'url' => 'admin/master_orders',
+              'icon' => 'fa fa-cubes'
+            ],
+            [
               'title' => 'Master Transaction',
               'url' => 'admin/master_transaction',
               'icon' => 'fa fa-bill'
@@ -95,14 +100,6 @@
             'site' => 'order',
             'title' => 'Order',
           ],
-          [
-            'site' => 'transaction',
-            'title' => 'Transaction',
-          ],
-          [
-            'site' => 'test',
-            'title' => 'Test',
-          ]
         ];
         if ($user['role_id'] == 5) : ?>
           <li class="nav-header">CUSTOMER'S MENU</li>
