@@ -29,7 +29,21 @@ class AdminController extends BaseController
 
     public function index()
     {
+        date_default_timezone_set('Asia/Jakarta');
         $data = $this->static_data('Dashboard');
+        $data['total_pemasukkan'] = $this->orderDetailModel
+            ->selectSum('order_details.total', 'total')
+            ->join('orders', 'order_details.order_id = orders.order_id')
+            ->where('orders.order_status > 1')
+            ->like('orders.created_at', date("Y-m"), 'left')
+            ->first();
+
+        $data['total_barang_keluar'] = $this->orderDetailModel
+            ->selectSum('order_details.qty', 'total')
+            ->join('orders', 'order_details.order_id = orders.order_id')
+            ->where('orders.order_status > 1')
+            ->like('orders.created_at', date("Y-m"), 'left')
+            ->first();
 
         return view('admin/dashboard', $data);
     }
