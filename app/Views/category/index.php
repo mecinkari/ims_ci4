@@ -33,6 +33,7 @@
       <div class="card-body table-responsive p-0" style="height: 500px;">
         <div class="p-3">
           <a href="<?= site_url('admin/create_category') ?>" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Category</a>
+          <a href="<?= site_url('admin/export_category') ?>" class="btn btn-danger"><i class="far fa-file-pdf"></i> Export PDF</a>
         </div>
         <table class="table table-head-fixed text-nowrap">
           <thead>

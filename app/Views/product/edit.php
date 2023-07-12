@@ -67,20 +67,6 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="" class="col-sm-2 col-form-label">Supplier</label>
-            <div class="col-sm-10">
-              <!-- <input type="text" name="product_name" class="form-control"> -->
-              <select name="supplier_id" id="" class="form-control">
-                <?php foreach ($suppliers as $sup) : ?>
-                  <option <?php if ($product['supplier_id'] == $sup['supplier_id']) : ?> selected <?php endif ?> value="<?= $sup['supplier_id'] ?>"><?= $sup['supplier_name'] . ' - ' . $sup['supplier_email'] ?></option>
-                <?php endforeach ?>
-              </select>
-              <?php if ($validation->getError('supplier_id')) : ?>
-                <small class="text-danger"><?= $validation->getError('supplier_id') ?></small>
-              <?php endif ?>
-            </div>
-          </div>
-          <div class="form-group row">
             <label for="" class="col-sm-2 col-form-label">Kategori</label>
             <div class="col-sm-10">
               <!-- <input type="text" name="product_name" class="form-control"> -->

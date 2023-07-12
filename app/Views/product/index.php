@@ -39,8 +39,9 @@
               <th>Deskripsi</th>
               <th>Harga</th>
               <th>Stok</th>
-              <th>Supplier</th>
+              <!-- <th>Supplier</th> -->
               <th>Kategori</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -51,7 +52,6 @@
                 <td><?= $product['product_desc'] ?></td>
                 <td><?= $product['product_price'] ?></td>
                 <td><?= $product['product_qty'] ?></td>
-                <td><?= $product['supplier_name'] ?></td>
                 <td><?= $product['category_name'] ?></td>
                 <td>
                   <a href="<?= site_url('admin/edit_product/' . $product['product_id']) ?>" class="btn btn-primary">

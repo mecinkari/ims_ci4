@@ -10,7 +10,7 @@ use CodeIgniter\RESTful\ResourceController;
 
 class ProductController extends BaseController
 {
-    private $userModel, $productModel, $categoryModel, $supplierModel, $userID;
+    private $userModel, $productModel, $categoryModel, $supplierModel, $userID, $staticData;
     private $title = 'IMS', $page = 'Product';
     public function __construct()
     {
@@ -22,6 +22,7 @@ class ProductController extends BaseController
         $this->productModel = new Product();
         $this->categoryModel = new Category();
         $this->supplierModel = new SupplierModel();
+        $this->staticData = new StaticData();
     }
     /**
      * Return an array of resource objects, themselves in array format
@@ -31,10 +32,8 @@ class ProductController extends BaseController
     public function index()
     {
         //
-        $data['title'] = $this->title . ' | Create ' . $this->page;
-        $data['appname'] = $this->title;
-        $data['user'] = $this->userModel->find($this->userID);
-        $data['products'] = $this->productModel->join('categories', 'products.category_id = categories.category_id')->join('suppliers', 'products.supplier_id = suppliers.supplier_id')->findAll();
+        $data = $this->staticData->get_static_data(' | Create ' . $this->page);
+        $data['products'] = $this->productModel->join('categories', 'products.category_id = categories.category_id')->findAll();
         // dd($data['products']);
         // dd(string_generator());
         return view('product/index', $data);
@@ -57,9 +56,7 @@ class ProductController extends BaseController
      */
     public function create()
     {
-        $data['title'] = $this->title . ' | Create ' . $this->page;
-        $data['appname'] = $this->title;
-        $data['user'] = $this->userModel->find($this->userID);
+        $data = $this->staticData->get_static_data(' | Create ' . $this->page);
         $data['categories'] = $this->categoryModel->findAll();
         $data['suppliers'] = $this->supplierModel->findAll();
         return view('product/create', $data);
@@ -72,10 +69,7 @@ class ProductController extends BaseController
      */
     public function save()
     {
-        //
-        $data['title'] = $this->title . ' | Create ' . $this->page;
-        $data['appname'] = $this->title;
-        $data['user'] = $this->userModel->find($this->userID);
+        $data = $this->staticData->get_static_data(' | Create ' . $this->page);
         $data['categories'] = $this->categoryModel->findAll();
         $data['suppliers'] = $this->supplierModel->findAll();
 
@@ -108,7 +102,6 @@ class ProductController extends BaseController
         $product_desc = $this->request->getPost('product_desc');
         $product_price = $this->request->getPost('product_price');
         $product_qty = $this->request->getPost('product_qty');
-        $supplier_id = $this->request->getPost('supplier_id');
         $category_id = $this->request->getPost('category_id');
 
         $new_data = [
@@ -117,7 +110,6 @@ class ProductController extends BaseController
             'product_desc' => $product_desc,
             'product_price' => $product_price,
             'product_qty' => $product_qty,
-            'supplier_id' => $supplier_id,
             'category_id' => $category_id,
         ];
 
@@ -132,9 +124,7 @@ class ProductController extends BaseController
      */
     public function edit($id = null)
     {
-        $data['title'] = $this->title . ' | Edit ' . $this->page;
-        $data['appname'] = $this->title;
-        $data['user'] = $this->userModel->find($this->userID);
+        $data = $this->staticData->get_static_data(' | Edit ' . $this->page);
         $data['product'] = $this->productModel->find($id);
         $data['categories'] = $this->categoryModel->findAll();
         $data['suppliers'] = $this->supplierModel->findAll();
@@ -149,10 +139,7 @@ class ProductController extends BaseController
      */
     public function update($id = null)
     {
-        //
-        $data['title'] = $this->title . ' | Create ' . $this->page;
-        $data['appname'] = $this->title;
-        $data['user'] = $this->userModel->find($this->userID);
+        $data = $this->staticData->get_static_data(' | Create ' . $this->page);
         $data['categories'] = $this->categoryModel->findAll();
         $data['suppliers'] = $this->supplierModel->findAll();
 
@@ -184,7 +171,6 @@ class ProductController extends BaseController
         $product_desc = $this->request->getPost('product_desc');
         $product_price = $this->request->getPost('product_price');
         $product_qty = $this->request->getPost('product_qty');
-        $supplier_id = $this->request->getPost('supplier_id');
         $category_id = $this->request->getPost('category_id');
 
         $new_data = [
@@ -192,7 +178,6 @@ class ProductController extends BaseController
             'product_desc' => $product_desc,
             'product_price' => $product_price,
             'product_qty' => $product_qty,
-            'supplier_id' => $supplier_id,
             'category_id' => $category_id,
         ];
 
@@ -210,5 +195,48 @@ class ProductController extends BaseController
         //
         $this->productModel->delete($id);
         return redirect('admin/master_product')->with('success', 'Produk berhasil dihapus!');
+    }
+
+    public function purchased_product()
+    {
+        $db = \Config\Database::connect();
+        $data = $this->staticData->get_static_data(' | Purchased Products');
+        $data['purchased_products'] = $db->table('purchased_products')
+            ->join('products', 'products.product_id = purchased_products.product_id')
+            ->join('suppliers', 'suppliers.supplier_id = purchased_products.supplier_id')
+            ->orderBy('purchased_products.created_at', 'desc')
+            ->get()
+            ->getResult('array');
+        return view('admin/purchased_product', $data);
+    }
+
+    public function add_purchased_product()
+    {
+        $data = $this->staticData->get_static_data(' | Add Purchased Products');
+        $data['products'] = $this->productModel->findAll();
+        $data['suppliers'] = $this->supplierModel->findAll();
+        return view('admin/add_purchased_product', $data);
+    }
+
+    public function save_purchased_product()
+    {
+        $new_data = array(
+            'purchased_product_id' => string_generator(),
+            'product_id' => $this->request->getPost('product_id'),
+            'qty' => $this->request->getPost('qty'),
+            'supplier_id' => $this->request->getPost('supplier_id')
+        );
+        $current_product_qty = (int) $this->productModel->where('product_id', $new_data['product_id'])->first()['product_qty'];
+
+        $db = \Config\Database::connect();
+        $builder = $db->table('purchased_products');
+
+        $builder->insert($new_data);
+
+        $this->productModel->update($new_data['product_id'], array(
+            'product_qty' => $current_product_qty + (int) $new_data['qty']
+        ));
+
+        return redirect('admin/purchased_product')->with('success', 'Data berhasil ditambahkan ke database!');
     }
 }

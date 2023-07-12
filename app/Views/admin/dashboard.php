@@ -16,12 +16,6 @@
 				<div class="col-sm-6">
 					<h1>Dashboard</h1>
 				</div>
-				<!-- <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Blank Page</li>
-          </ol>
-        </div> -->
 			</div>
 		</div>
 		<!-- /.container-fluid -->
@@ -39,7 +33,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-6">
+				<div class="col-sm-3">
 					<div class="small-box bg-success">
 						<div class="inner">
 							<h3>Rp<?= number_format($total_pemasukkan['total']) ?></h3>
@@ -50,14 +44,36 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-6">
+				<div class="col-sm-3">
 					<div class="small-box bg-info">
 						<div class="inner">
-							<h3><?= $total_barang_keluar['total'] ?></h3>
-							<p>Total barang yang dibeli bulan ini</p>
+							<h3><?= ($total_barang_keluar['total'] == 0) ? '0' : $total_barang_keluar['total'] ?></h3>
+							<p>Barang keluar bulan ini</p>
+						</div>
+						<div class="icon">
+							<i class="fa fa-cart-arrow-down"></i>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="small-box bg-warning">
+						<div class="inner">
+							<h3><?= $jumlah_produk['total'] ?></h3>
+							<p>Produk</p>
 						</div>
 						<div class="icon">
 							<i class="fa fa-cubes"></i>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="small-box bg-secondary">
+						<div class="inner">
+							<h3><?= $jumlah_customer['total'] ?></h3>
+							<p>Jumlah Customer</p>
+						</div>
+						<div class="icon">
+							<i class="fa fa-user"></i>
 						</div>
 					</div>
 				</div>

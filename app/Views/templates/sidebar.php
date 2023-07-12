@@ -73,6 +73,11 @@
               'icon' => 'fa fa-cube'
             ],
             [
+              'title' => 'Product Dibeli',
+              'url' => 'admin/purchased_product',
+              'icon' => 'fa fa-cart-arrow-down'
+            ],
+            [
               'title' => 'Master Orders',
               'url' => 'admin/master_orders',
               'icon' => 'fa fa-cubes'

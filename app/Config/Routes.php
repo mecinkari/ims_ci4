@@ -60,6 +60,7 @@ $routes->group('admin', ['filter' => ['auth-checker', 'role-checker:1,2,3']], fu
     $routes->get('edit_category/(:any)', 'CategoryController::edit/$1');
     $routes->post('edit_category/(:any)', 'CategoryController::update/$1');
     $routes->get('delete_category/(:any)', 'CategoryController::delete/$1');
+    $routes->get('export_category', 'CategoryController::export');
 
     // Create, Read Update, Delete done
     $routes->get('master_supplier', 'SupplierController::index');
@@ -84,6 +85,11 @@ $routes->group('admin', ['filter' => ['auth-checker', 'role-checker:1,2,3']], fu
     $routes->get('master_orders', 'AdminController::master_orders');
     $routes->get('update_status_order/(:any)', 'AdminController::edit_status_order/$1');
     $routes->post('update_status_order/(:any)', 'AdminController::update_status_order/$1');
+
+    // produk dibeli
+    $routes->get('purchased_product', 'ProductController::purchased_product');
+    $routes->get('add_purchased_product', 'ProductController::add_purchased_product');
+    $routes->post('add_purchased_product', 'ProductController::save_purchased_product');
 });
 
 $routes->group('user', ['filter' => 'auth-checker'], function ($routes) {

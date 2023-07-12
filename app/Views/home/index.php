@@ -25,6 +25,14 @@
   <section class="content">
     <div class="container-fluid">
       <div class="row">
+        <div class="col-sm-12">
+          <div class="card">
+            <div class="card-body">
+              <p id="clock" class="display-4"></p>
+              <p id="date" class="lead text-bold"></p>
+            </div>
+          </div>
+        </div>
         <div class="col-lg-6 col-6">
 
           <div class="small-box bg-info">
@@ -38,20 +46,6 @@
           </div>
         </div>
 
-        <!-- <div class="col-lg-6 col-6">
-
-          <div class="small-box bg-success">
-            <div class="inner">
-              <h3>Rp<?= number_format($total_payment) ?></h3>
-              <p>Payment on hold</p>
-            </div>
-            <div class="icon">
-              <i class="fa fa-dollar-sign"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-      </div>
-    </div> -->
-
       </div>
     </div>
   </section>
@@ -59,4 +53,28 @@
 </div>
 <!-- /.content-wrapper -->
 
+<?= $this->endSection() ?>
+
+<?= $this->section('js') ?>
+<script>
+  function clock() {
+    var dateInfo = new Date();
+    var day = dateInfo.getDate();
+    var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"];
+    var months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    var hour = (dateInfo.getHours() < 10) ? "0" + dateInfo.getHours() : dateInfo.getHours();
+    var min = (dateInfo.getMinutes() < 10) ? "0" + dateInfo.getMinutes() : dateInfo.getMinutes();
+    var sec = (dateInfo.getSeconds() < 10) ? "0" + dateInfo.getSeconds() : dateInfo.getSeconds();
+    var current_time = `${hour} : ${min} : ${sec}`;
+    var current_date = `${days[dateInfo.getDay()]}, ${day} ${months[dateInfo.getMonth()]} ${dateInfo.getFullYear()}`;
+
+    $("#clock").text(current_time);
+    $("#date").text(current_date);
+  }
+
+  clock();
+  setInterval(() => {
+    clock();
+  }, 1000);
+</script>
 <?= $this->endSection() ?>

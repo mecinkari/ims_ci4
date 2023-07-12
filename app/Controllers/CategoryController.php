@@ -128,4 +128,9 @@ class CategoryController extends BaseController
         $this->categoryModel->delete($id);
         return redirect()->to('admin/master_category')->with('success', 'Data berhasil dihapus dari database!!');
     }
+
+    public function export()
+    {
+        echo "Hi";
+    }
 }
