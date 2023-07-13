@@ -27,6 +27,7 @@
       <div class="card">
         <div class="card-body">
           <a href="<?= site_url('admin/add_purchased_product') ?>" class="btn btn-success">Tambah Produk</a>
+          <a href="<?= site_url('admin/export_purchased_product') ?>" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf"></i> Export PDF</a>
 
           <table class="table">
             <thead>

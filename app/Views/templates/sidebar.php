@@ -82,11 +82,6 @@
               'url' => 'admin/master_orders',
               'icon' => 'fa fa-cubes'
             ],
-            [
-              'title' => 'Master Transaction',
-              'url' => 'admin/master_transaction',
-              'icon' => 'fa fa-bill'
-            ]
           ]
           ?>
           <li class="nav-header">ADMIN</li>

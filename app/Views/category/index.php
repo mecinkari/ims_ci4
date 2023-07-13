@@ -29,7 +29,7 @@
     <div class="card">
       <div class="card-header">
         <a href="<?= site_url('admin/create_category') ?>" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Category</a>
-        <a href="<?= site_url('admin/export_category') ?>" target="_blank" class="btn btn-danger"><i class="far fa-file-pdf"></i> Export PDF</a>
+        <a href="<?= site_url('admin/export_category') ?>" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf"></i> Export PDF</a>
       </div>
       <div class="card-body table-responsive p-0" style="height: 500px;">
         <table class="table table-head-fixed text-nowrap">

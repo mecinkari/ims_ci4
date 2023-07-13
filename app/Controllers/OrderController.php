@@ -103,7 +103,7 @@ class OrderController extends BaseController
         $data['title'] = $this->title . '|View Order Details';
         $data['appname'] = $this->title;
         $data['user'] = $this->userModel->find($this->userID);
-        $data['categories'] = $this->categoryModel->findAll();
+        $data['order_id'] = $id;
         $data['order_details'] = $this->orderDetailModel->join('products', 'products.product_id = order_details.product_id')->where('order_id', $id)->findAll();
         $data['total'] = $this->orderDetailModel->selectSum('total', 'total')->where('order_id', $id)->first()['total'];
 
@@ -128,5 +128,16 @@ class OrderController extends BaseController
         $this->orderDetailModel->where('order_id', $id)->delete();
         $this->orderModel->delete($id);
         return redirect()->to('order')->with('success', 'Order dibatalkan!');
+    }
+
+    public function invoice($id)
+    {
+        $staticData = new StaticData();
+        $data = $staticData->get_static_data('Invoice');
+        $data['order_details'] = $this->orderDetailModel->join('products', 'products.product_id = order_details.product_id')->where('order_id', $id)->findAll();
+        $data['total'] = $this->orderDetailModel->selectSum('total', 'total')->where('order_id', $id)->first()['total'];
+        $data['order_id'] = $id;
+        // dd($data['order_details']);
+        return view('new_order/export', $data);
     }
 }

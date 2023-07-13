@@ -207,7 +207,7 @@ class ProductController extends BaseController
             ->orderBy('purchased_products.created_at', 'desc')
             ->get()
             ->getResult('array');
-        return view('admin/purchased_product', $data);
+        return view('purchased_product/purchased_product', $data);
     }
 
     public function add_purchased_product()
@@ -215,7 +215,7 @@ class ProductController extends BaseController
         $data = $this->staticData->get_static_data(' | Add Purchased Products');
         $data['products'] = $this->productModel->findAll();
         $data['suppliers'] = $this->supplierModel->findAll();
-        return view('admin/add_purchased_product', $data);
+        return view('purchased_product/add_purchased_product', $data);
     }
 
     public function save_purchased_product()
@@ -238,6 +238,19 @@ class ProductController extends BaseController
         ));
 
         return redirect('admin/purchased_product')->with('success', 'Data berhasil ditambahkan ke database!');
+    }
+
+    public function export_purchased_product()
+    {
+        $data = $this->staticData->get_static_data('Purchased Products');
+        $db = \Config\Database::connect()->table('purchased_products');
+        $data['purchased_products'] = $db
+            ->select('purchased_products.*, products.product_name, suppliers.supplier_name')
+            ->join('products', 'products.product_id = purchased_products.product_id')
+            ->join('suppliers', 'suppliers.supplier_id = purchased_products.supplier_id')
+            ->get()
+            ->getResultArray();
+        return view('purchased_product/export', $data);
     }
 
     public function export()

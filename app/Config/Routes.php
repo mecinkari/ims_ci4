@@ -80,9 +80,6 @@ $routes->group('admin', ['filter' => ['auth-checker', 'role-checker:1,2,3']], fu
     $routes->get('delete_product/(:any)', 'ProductController::delete/$1');
     $routes->get('export_product', 'ProductController::export');
 
-    // master transction
-    $routes->get('master_transaction', 'TransactionController::master_transaction');
-
     //master orders
     $routes->get('master_orders', 'AdminController::master_orders');
     $routes->get('update_status_order/(:any)', 'AdminController::edit_status_order/$1');
@@ -92,6 +89,7 @@ $routes->group('admin', ['filter' => ['auth-checker', 'role-checker:1,2,3']], fu
     $routes->get('purchased_product', 'ProductController::purchased_product');
     $routes->get('add_purchased_product', 'ProductController::add_purchased_product');
     $routes->post('add_purchased_product', 'ProductController::save_purchased_product');
+    $routes->get('export_purchased_product', 'ProductController::export_purchased_product');
 });
 
 $routes->group('user', ['filter' => 'auth-checker'], function ($routes) {
@@ -119,17 +117,13 @@ $routes->group('order', ['filter' => ['auth-checker', 'role-checker:1,2,3,5']], 
     $routes->get('save_order', 'OrderController::save_order');
     $routes->get('cancel_order/(:any)', 'OrderController::cancel_order/$1');
     $routes->get('view_details/(:any)', 'OrderController::view_details/$1');
+    $routes->get('invoice/(:any)', 'OrderController::invoice/$1');
 });
 
 $routes->group('transaction', ['filter' => ['auth-checker', 'role-checker:5']], function ($routes) {
     $routes->get('', 'TransactionController::index');
     $routes->get('check_out/(:any)', 'TransactionController::check_out/$1');
     $routes->get('check_out_now/(:any)', 'TransactionController::check_out_now/$1');
-});
-
-$routes->group('test', ['filter' => ['auth-checker', 'role-checker:5']], function ($routes) {
-    $routes->get('', 'TestController::index');
-    $routes->post('', 'TestController::new');
 });
 /*
  * --------------------------------------------------------------------

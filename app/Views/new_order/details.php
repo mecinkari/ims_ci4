@@ -27,7 +27,8 @@
     <!-- Default box -->
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">Title</h3>
+        <!-- <h3 class="card-title">Invoice</h3> -->
+        <a href="<?= site_url('order/invoice/') . $order_id ?>" class="btn btn-danger"><i class="fa fa-file-pdf"></i> Cetak Invoice</a>
       </div>
       <div class="card-body">
         <table class="table">
