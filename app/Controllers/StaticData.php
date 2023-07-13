@@ -22,6 +22,7 @@ class StaticData
   {
     return array(
       'title' => $this->title . '|' . $title,
+      'only_title' => $title,
       'appname' => $this->title,
       'user' => $this->userModel->find($this->userID)
     );

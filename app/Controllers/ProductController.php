@@ -239,4 +239,11 @@ class ProductController extends BaseController
 
         return redirect('admin/purchased_product')->with('success', 'Data berhasil ditambahkan ke database!');
     }
+
+    public function export()
+    {
+        $data = $this->staticData->get_static_data('Product');
+        $data['products'] = $this->productModel->findAll();
+        return view('product/export', $data);
+    }
 }

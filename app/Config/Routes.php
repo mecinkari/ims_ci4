@@ -69,6 +69,7 @@ $routes->group('admin', ['filter' => ['auth-checker', 'role-checker:1,2,3']], fu
     $routes->get('edit_supplier/(:any)', 'SupplierController::edit/$1');
     $routes->post('edit_supplier/(:any)', 'SupplierController::update/$1');
     $routes->get('delete_supplier/(:any)', 'SupplierController::delete/$1');
+    $routes->get('export_supplier', 'SupplierController::export');
 
     // Create, Read Update, Delete done
     $routes->get('master_product', 'ProductController::index');
@@ -77,6 +78,7 @@ $routes->group('admin', ['filter' => ['auth-checker', 'role-checker:1,2,3']], fu
     $routes->get('edit_product/(:any)', 'ProductController::edit/$1');
     $routes->post('edit_product/(:any)', 'ProductController::update/$1');
     $routes->get('delete_product/(:any)', 'ProductController::delete/$1');
+    $routes->get('export_product', 'ProductController::export');
 
     // master transction
     $routes->get('master_transaction', 'TransactionController::master_transaction');

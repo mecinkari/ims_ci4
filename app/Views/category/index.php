@@ -28,13 +28,10 @@
     <!-- Default box -->
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">Master Categories</h3>
+        <a href="<?= site_url('admin/create_category') ?>" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Category</a>
+        <a href="<?= site_url('admin/export_category') ?>" target="_blank" class="btn btn-danger"><i class="far fa-file-pdf"></i> Export PDF</a>
       </div>
       <div class="card-body table-responsive p-0" style="height: 500px;">
-        <div class="p-3">
-          <a href="<?= site_url('admin/create_category') ?>" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Category</a>
-          <a href="<?= site_url('admin/export_category') ?>" class="btn btn-danger"><i class="far fa-file-pdf"></i> Export PDF</a>
-        </div>
         <table class="table table-head-fixed text-nowrap">
           <thead>
             <tr>

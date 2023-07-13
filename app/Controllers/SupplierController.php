@@ -145,4 +145,12 @@ class SupplierController extends BaseController
         $this->supplierModel->update($id, $new_data);
         return redirect()->to('admin/master_supplier')->with('success', 'Data Supplier berhasil di-update');
     }
+
+    public function export()
+    {
+        $staticData = new StaticData();
+        $data = $staticData->get_static_data('Supplier');
+        $data['suppliers'] = $this->supplierModel->findAll();
+        return view('supplier/export', $data);
+    }
 }

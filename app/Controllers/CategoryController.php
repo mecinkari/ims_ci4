@@ -10,7 +10,7 @@ use App\Models\User;
 
 class CategoryController extends BaseController
 {
-    private $title = 'IMS', $profileModel, $roleModel, $userModel, $categoryModel, $userID;
+    private $title = 'IMS', $profileModel, $roleModel, $userModel, $categoryModel, $userID, $staticData;
 
     public function __construct()
     {
@@ -18,6 +18,7 @@ class CategoryController extends BaseController
         $this->roleModel = new Role();
         $this->userModel = new User();
         $this->categoryModel = new Category();
+        $this->staticData = new StaticData();
         if (session()->get('user_id')) {
             $this->userID = session()->get('user_id');
         }
@@ -131,6 +132,8 @@ class CategoryController extends BaseController
 
     public function export()
     {
-        echo "Hi";
+        $data = $this->staticData->get_static_data('Category');
+        $data['categories'] = $this->categoryModel->findAll();
+        return view('category/export', $data);
     }
 }

@@ -30,6 +30,7 @@
       <div class="card-body table-responsive p-0" style="height: 500px;">
         <div class="p-3">
           <a href="<?= site_url('admin/create_supplier') ?>" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Data Supplier</a>
+          <a href="<?= site_url('admin/export_supplier') ?>" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf"></i> Export PDF</a>
         </div>
         <table class="table table-head-fixed text-nowrap">
           <thead>
