@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class SupplierModel extends Model
+class Supplier extends Model
 {
     protected $DBGroup          = 'default';
     protected $table            = 'suppliers';

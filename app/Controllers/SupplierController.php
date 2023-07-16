@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\Profile;
 use App\Models\Role;
-use App\Models\SupplierModel;
+use App\Models\Supplier;
 use App\Models\User;
 
 class SupplierController extends BaseController
@@ -17,7 +17,7 @@ class SupplierController extends BaseController
         $this->profileModel = new Profile();
         $this->roleModel = new Role();
         $this->userModel = new User();
-        $this->supplierModel = new SupplierModel();
+        $this->supplierModel = new Supplier();
         if (session()->get('user_id')) {
             $this->userID = session()->get('user_id');
         }

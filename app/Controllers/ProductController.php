@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\SupplierModel;
+use App\Models\Supplier;
 use App\Models\User;
 use CodeIgniter\RESTful\ResourceController;
 
@@ -21,7 +21,7 @@ class ProductController extends BaseController
         $this->userModel = new User();
         $this->productModel = new Product();
         $this->categoryModel = new Category();
-        $this->supplierModel = new SupplierModel();
+        $this->supplierModel = new Supplier();
         $this->staticData = new StaticData();
     }
 
