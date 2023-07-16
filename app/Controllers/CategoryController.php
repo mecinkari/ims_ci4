@@ -132,7 +132,7 @@ class CategoryController extends BaseController
 
     public function export()
     {
-        $data = $this->staticData->get_static_data('Category');
+        $data = $this->staticData->get_static_data('Export Data Category');
         $data['categories'] = $this->categoryModel->findAll();
         return view('category/export', $data);
     }

@@ -11,7 +11,7 @@ use CodeIgniter\RESTful\ResourceController;
 class ProductController extends BaseController
 {
     private $userModel, $productModel, $categoryModel, $supplierModel, $userID, $staticData;
-    private $title = 'IMS', $page = 'Product';
+    private $page = 'Product';
     public function __construct()
     {
         if (session()->get('user_id')) {
@@ -24,36 +24,14 @@ class ProductController extends BaseController
         $this->supplierModel = new SupplierModel();
         $this->staticData = new StaticData();
     }
-    /**
-     * Return an array of resource objects, themselves in array format
-     *
-     * @return mixed
-     */
+
     public function index()
     {
-        //
         $data = $this->staticData->get_static_data(' | Create ' . $this->page);
         $data['products'] = $this->productModel->join('categories', 'products.category_id = categories.category_id')->findAll();
-        // dd($data['products']);
-        // dd(string_generator());
         return view('product/index', $data);
     }
 
-    /**
-     * Return the properties of a resource object
-     *
-     * @return mixed
-     */
-    public function show($id = null)
-    {
-        //
-    }
-
-    /**
-     * Return a new resource object, with default properties
-     *
-     * @return mixed
-     */
     public function create()
     {
         $data = $this->staticData->get_static_data(' | Create ' . $this->page);
@@ -62,11 +40,6 @@ class ProductController extends BaseController
         return view('product/create', $data);
     }
 
-    /**
-     * Create a new resource object, from "posted" parameters
-     *
-     * @return mixed
-     */
     public function save()
     {
         $data = $this->staticData->get_static_data(' | Create ' . $this->page);
@@ -117,26 +90,15 @@ class ProductController extends BaseController
         return redirect('admin/master_product')->with('success', 'Produk "' . $product_name . '" berhasil ditambahkan ke database!');
     }
 
-    /**
-     * Return the editable properties of a resource object
-     *
-     * @return mixed
-     */
     public function edit($id = null)
     {
         $data = $this->staticData->get_static_data(' | Edit ' . $this->page);
         $data['product'] = $this->productModel->find($id);
         $data['categories'] = $this->categoryModel->findAll();
         $data['suppliers'] = $this->supplierModel->findAll();
-        // dd($data['product']);
         return view('product/edit', $data);
     }
 
-    /**
-     * Add or update a model resource, from "posted" properties
-     *
-     * @return mixed
-     */
     public function update($id = null)
     {
         $data = $this->staticData->get_static_data(' | Create ' . $this->page);
@@ -185,14 +147,8 @@ class ProductController extends BaseController
         return redirect('admin/master_product')->with('success', 'Produk "' . $product_name . '" berhasil di-update!');
     }
 
-    /**
-     * Delete the designated resource object from the model
-     *
-     * @return mixed
-     */
     public function delete($id = null)
     {
-        //
         $this->productModel->delete($id);
         return redirect('admin/master_product')->with('success', 'Produk berhasil dihapus!');
     }
@@ -242,7 +198,7 @@ class ProductController extends BaseController
 
     public function export_purchased_product()
     {
-        $data = $this->staticData->get_static_data('Purchased Products');
+        $data = $this->staticData->get_static_data('Export Purchased Products');
         $db = \Config\Database::connect()->table('purchased_products');
         $data['purchased_products'] = $db
             ->select('purchased_products.*, products.product_name, suppliers.supplier_name')
@@ -255,7 +211,7 @@ class ProductController extends BaseController
 
     public function export()
     {
-        $data = $this->staticData->get_static_data('Product');
+        $data = $this->staticData->get_static_data('Export Data Product');
         $data['products'] = $this->productModel->findAll();
         return view('product/export', $data);
     }

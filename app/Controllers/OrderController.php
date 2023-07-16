@@ -7,13 +7,14 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
+use App\Models\Profile;
 use App\Models\User;
 
 class OrderController extends BaseController
 {
     private $title = 'IMS';
 
-    private $userModel, $orderModel, $productModel, $categoryModel, $orderDetailModel;
+    private $userModel, $orderModel, $productModel, $categoryModel, $orderDetailModel, $profileModel;
     private $userID;
 
     public function __construct()
@@ -23,6 +24,7 @@ class OrderController extends BaseController
         $this->productModel = new Product();
         $this->categoryModel = new Category();
         $this->orderDetailModel = new OrderDetail();
+        $this->profileModel = new Profile();
 
         if (session()->has('user_id')) {
             $this->userID = session()->get('user_id');
@@ -31,9 +33,8 @@ class OrderController extends BaseController
 
     public function index()
     {
-        $data['title'] = $this->title . '|My Orders';
-        $data['appname'] = $this->title;
-        $data['user'] = $this->userModel->find($this->userID);
+        $staticData = new StaticData();
+        $data = $staticData->get_static_data('My Orders');
         $data['orders'] = $this->orderModel->where('user_id', session()->get('user_id'))->findAll();
 
         return view('new_order/index', $data);
@@ -58,9 +59,8 @@ class OrderController extends BaseController
             return redirect()->to('order');
         }
 
-        $data['title'] = $this->title . '|Create Order';
-        $data['appname'] = $this->title;
-        $data['user'] = $this->userModel->find($this->userID);
+        $staticData = new StaticData();
+        $data = $staticData->get_static_data('Create Order');
         $data['categories'] = $this->categoryModel->findAll();
 
         return view('new_order/create', $data);
@@ -100,9 +100,8 @@ class OrderController extends BaseController
 
     public function view_details($id = null)
     {
-        $data['title'] = $this->title . '|View Order Details';
-        $data['appname'] = $this->title;
-        $data['user'] = $this->userModel->find($this->userID);
+        $staticData = new StaticData();
+        $data = $staticData->get_static_data('View Order Details');
         $data['order_id'] = $id;
         $data['order_details'] = $this->orderDetailModel->join('products', 'products.product_id = order_details.product_id')->where('order_id', $id)->findAll();
         $data['total'] = $this->orderDetailModel->selectSum('total', 'total')->where('order_id', $id)->first()['total'];
@@ -133,11 +132,13 @@ class OrderController extends BaseController
     public function invoice($id)
     {
         $staticData = new StaticData();
-        $data = $staticData->get_static_data('Invoice');
+        $order = $this->orderModel->where('order_id', $id)->first();
+        $user = $this->profileModel->where('user_id', $order['user_id'])->first();
+        $title = 'Invoice ' . $id . ' - ' . $user['full_name'];
+        $data = $staticData->get_static_data($title);
         $data['order_details'] = $this->orderDetailModel->join('products', 'products.product_id = order_details.product_id')->where('order_id', $id)->findAll();
         $data['total'] = $this->orderDetailModel->selectSum('total', 'total')->where('order_id', $id)->first()['total'];
         $data['order_id'] = $id;
-        // dd($data['order_details']);
         return view('new_order/export', $data);
     }
 }

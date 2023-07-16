@@ -48,7 +48,7 @@
     var elementHTML = document.querySelector("#content");
     docPDF.html(elementHTML, {
       callback: function(docPDF) {
-        docPDF.save(`Laporan <?= $only_title ?> ${current_date}.pdf`);
+        docPDF.save(`<?= $only_title ?> ${current_date}.pdf`);
       },
       x: 10,
       y: 10,

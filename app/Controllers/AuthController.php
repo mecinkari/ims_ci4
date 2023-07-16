@@ -17,7 +17,6 @@ class AuthController extends BaseController
 
     public function login()
     {
-        //
         $data = [
             'title' => $this->title . '-Login',
             'appname' => $this->title,
@@ -29,7 +28,6 @@ class AuthController extends BaseController
 
     public function register()
     {
-        //
         $data = [
             'title' => $this->title . '-Register',
             'appname' => $this->title,

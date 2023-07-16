@@ -38,7 +38,6 @@ class HomeController extends BaseController
             ->where('orders.user_id', $this->userID)
             ->where('orders.order_status =', 0)
             ->first()['total'];
-        // dd($data['total_payment']);
 
         return view('home/index', $data);
     }

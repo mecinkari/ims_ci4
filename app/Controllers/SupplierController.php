@@ -149,7 +149,7 @@ class SupplierController extends BaseController
     public function export()
     {
         $staticData = new StaticData();
-        $data = $staticData->get_static_data('Supplier');
+        $data = $staticData->get_static_data('Export Data Supplier');
         $data['suppliers'] = $this->supplierModel->findAll();
         return view('supplier/export', $data);
     }

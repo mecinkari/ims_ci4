@@ -62,14 +62,9 @@ class AdminController extends BaseController
 
     public function master_user()
     {
-        //
         $db = \Config\Database::connect();
-
         $data = $this->staticData->get_static_data('Master User');
-
         $user = $this->userModel->where('user_id', session('user_id'))->first();
-
-        // dd($user['role_id']);
 
         $builder = $db->table('users');
         $builder->select('users.user_id, users.user_name, roles.role_name');
@@ -93,7 +88,6 @@ class AdminController extends BaseController
     public function save_user()
     {
         $data = $this->staticData->get_static_data('Create User');
-
         $data['roles'] = $this->roleModel->findAll();
 
         $validation_rules = [
@@ -139,7 +133,6 @@ class AdminController extends BaseController
     public function edit_user($id = null)
     {
         role_check($this->userID, [1, 2, 3]);
-
         $user = $this->userModel->find($id);
         $data = $this->staticData->get_static_data('Edit User ' . $user['user_name']);
         $data['roles'] = $this->roleModel->findAll();
@@ -150,9 +143,7 @@ class AdminController extends BaseController
     public function update_user($id = null)
     {
         role_check($this->userID, [1, 2, 3]);
-
         $user = $this->userModel->find($id);
-
         $data = [
             'role_id' => $this->request->getPost('role_id')
         ];
@@ -164,7 +155,6 @@ class AdminController extends BaseController
     public function delete_user($id = null)
     {
         role_check($this->userID, [1, 2, 3]);
-
         $this->roleModel->where('user_id', $id)->delete();
         $this->userModel->delete($id);
         return redirect('admin/master_user')->with('success', 'User berhasil dihapus dari database!');
@@ -173,12 +163,10 @@ class AdminController extends BaseController
     public function master_orders()
     {
         $data = $this->staticData->get_static_data('Master Orders');
-
         $data['all_orders'] = $this->orderModel
             ->join('profiles', 'profiles.user_id = orders.user_id')
             ->orderBy('orders.created_at', 'asc')
             ->findAll();
-        // dd($data['all_orders']);
         return view('admin/master_orders', $data);
     }
 
@@ -186,7 +174,6 @@ class AdminController extends BaseController
     {
         $data = $this->staticData->get_static_data('Update Status Order');
         $data['order'] = $this->orderModel->where('order_id', $order_id)->first();
-        // dd($data['order']);
         return view('admin/update_status_order', $data);
     }
 
