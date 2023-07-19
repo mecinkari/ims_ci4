@@ -18,25 +18,14 @@ class RoleSeeder extends Seeder
             ],
             [
                 'role_id' => 2,
-                'role_name' => 'owner',
-                'role_desc' => 'owner'
-            ],
-            [
-                'role_id' => 3,
                 'role_name' => 'admin',
                 'role_desc' => 'admin'
             ],
             [
-                'role_id' => 4,
-                'role_name' => 'employee',
-                'role_desc' => 'employee'
-            ],
-            [
-                'role_id' => 5,
+                'role_id' => 3,
                 'role_name' => 'customer',
                 'role_desc' => 'customer'
-
-            ]
+            ],
         ];
         $db->table('roles')->insertBatch($data);
     }

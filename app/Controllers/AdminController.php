@@ -54,7 +54,7 @@ class AdminController extends BaseController
 
         $data['jumlah_customer'] = $this->userModel
             ->selectCount('user_id', 'total')
-            ->where('role_id', '5')
+            ->where('role_id', '3')
             ->first();
 
         return view('admin/dashboard', $data);
@@ -70,7 +70,7 @@ class AdminController extends BaseController
         $builder->select('users.user_id, users.user_name, roles.role_name');
         $builder->join('roles', 'users.role_id = roles.role_id');
         $builder->where('users.user_id !=', $this->userID);
-        if ($user['role_id'] == '3' || $user['role_id'] == '4') {
+        if ($user['role_id'] == '1' || $user['role_id'] == '2') {
             $builder->where('users.role_id !=', 1);
         }
         $data['allUsers'] = $builder->get()->getResult();

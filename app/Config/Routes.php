@@ -25,7 +25,7 @@ $routes->group('profile', ['filter' => 'auth-checker'], function ($routes) {
     $routes->post('update', 'ProfileController::update');
 });
 
-$routes->group('admin', ['filter' => ['auth-checker', 'role-checker:1,2,3']], function ($routes) {
+$routes->group('admin', ['filter' => ['auth-checker', 'role-checker:1,2']], function ($routes) {
     // Create, Read, Update, Delete done
     $routes->get('master_user', 'AdminController::master_user');
     $routes->get('create_user', 'AdminController::create_user');
@@ -67,10 +67,10 @@ $routes->group('admin', ['filter' => ['auth-checker', 'role-checker:1,2,3']], fu
     $routes->post('update_status_order/(:any)', 'AdminController::update_status_order/$1');
 
     // produk dibeli
-    $routes->get('purchased_product', 'ProductController::purchased_product');
-    $routes->get('add_purchased_product', 'ProductController::add_purchased_product');
-    $routes->post('add_purchased_product', 'ProductController::save_purchased_product');
-    $routes->get('export_purchased_product', 'ProductController::export_purchased_product');
+    $routes->get('purchased_product', 'ProductController::purchased_product', ['filter' => ['auth-checker', 'role-checker:1,2']]);
+    $routes->get('add_purchased_product', 'ProductController::add_purchased_product', ['filter' => ['auth-checker', 'role-checker:1,2']]);
+    $routes->post('add_purchased_product', 'ProductController::save_purchased_product', ['filter' => ['auth-checker', 'role-checker:1,2']]);
+    $routes->get('export_purchased_product', 'ProductController::export_purchased_product', ['filter' => ['auth-checker', 'role-checker:1,2']]);
 });
 
 $routes->group('user', ['filter' => 'auth-checker'], function ($routes) {
@@ -81,8 +81,8 @@ $routes->group('user', ['filter' => 'auth-checker'], function ($routes) {
     $routes->post('change_password', 'HomeController::update_password');
 });
 
-$routes->get('/dashboard', 'AdminController::index', ['filter' => ['auth-checker', 'role-checker:1,2,3,4']]);
-$routes->get('/home', 'HomeController::index', ['filter' => ['auth-checker', 'role-checker:5']]);
+$routes->get('/dashboard', 'AdminController::index', ['filter' => ['auth-checker', 'role-checker:1,2']]);
+$routes->get('/home', 'HomeController::index', ['filter' => ['auth-checker', 'role-checker:3']]);
 $routes->get('/forbidden', 'AuthController::forbidden');
 
 $routes->group('api', ['filter' => 'auth-checker'], function ($routes) {
@@ -90,7 +90,7 @@ $routes->group('api', ['filter' => 'auth-checker'], function ($routes) {
     $routes->get('get_product_detail/(:any)', 'ApiController::get_product_detail/$1');
 });
 
-$routes->group('order', ['filter' => ['auth-checker', 'role-checker:1,2,3,5']], function ($routes) {
+$routes->group('order', ['filter' => ['auth-checker', 'role-checker:1,2,3']], function ($routes) {
     $routes->get('', 'OrderController::index');
     $routes->get('create', 'OrderController::create');
     $routes->get('make', 'OrderController::make');
@@ -101,7 +101,7 @@ $routes->group('order', ['filter' => ['auth-checker', 'role-checker:1,2,3,5']], 
     $routes->get('invoice/(:any)', 'OrderController::invoice/$1');
 });
 
-$routes->group('transaction', ['filter' => ['auth-checker', 'role-checker:5']], function ($routes) {
+$routes->group('transaction', ['filter' => ['auth-checker', 'role-checker:3']], function ($routes) {
     $routes->get('', 'TransactionController::index');
     $routes->get('check_out/(:any)', 'TransactionController::check_out/$1');
     $routes->get('check_out_now/(:any)', 'TransactionController::check_out_now/$1');

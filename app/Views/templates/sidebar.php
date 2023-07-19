@@ -49,7 +49,7 @@
             <p class="text">Profile</p>
           </a>
         </li>
-        <?php if (in_array($user['role_id'], array(1, 2, 3))) : ?>
+        <?php if (in_array($user['role_id'], array(1, 2))) : ?>
           <?php
           $admin_links = [
             [
@@ -88,7 +88,7 @@
           <?php foreach ($admin_links as $link) : ?>
             <li class="nav-item">
               <a href="<?= site_url($link['url']) ?>" class="nav-link">
-                <i class="nav-icon <?= $link['icon'] ?> text-danger"></i>
+                <i class="nav-icon <?= $link['icon'] ?> text-success"></i>
                 <p class="text"><?= $link['title'] ?></p>
               </a>
             </li>
@@ -101,7 +101,7 @@
             'title' => 'Order',
           ],
         ];
-        if ($user['role_id'] == 5) : ?>
+        if ($user['role_id'] == 3) : ?>
           <li class="nav-header">CUSTOMER'S MENU</li>
           <?php foreach ($customers_menu as $cus) : ?>
             <li class="nav-item">
@@ -112,6 +112,12 @@
             </li>
           <?php endforeach ?>
         <?php endif ?>
+        <li class="nav-item">
+          <a href="<?= site_url('auth/logout') ?>" class="nav-link">
+            <i class="nav-icon fas fa-power-off text-danger"></i>
+            <p class="text">Logout</p>
+          </a>
+        </li>
       </ul>
     </nav>
     <!-- /.sidebar-menu -->

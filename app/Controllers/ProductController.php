@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\User;
-use CodeIgniter\RESTful\ResourceController;
 
 class ProductController extends BaseController
 {
@@ -28,7 +27,7 @@ class ProductController extends BaseController
     public function index()
     {
         $data = $this->staticData->get_static_data(' | Create ' . $this->page);
-        $data['products'] = $this->productModel->join('categories', 'products.category_id = categories.category_id')->findAll();
+        $data['products'] = $this->productModel->join('categories', 'products.category_id = categories.category_id')->orderBy('products.created_at', 'asc')->findAll();
         return view('product/index', $data);
     }
 
