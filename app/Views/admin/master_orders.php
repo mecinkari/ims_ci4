@@ -42,6 +42,7 @@
             <th>Status</th>
             <th>Nama</th>
             <th>User Email</th>
+            <th>Total</th>
             <th>Action</th>
           </tr>
         <tbody>
@@ -51,12 +52,17 @@
               <td><?= $order['order_status'] ?></td>
               <td><?= $order['full_name'] ?></td>
               <td><?= $order['email'] ?></td>
+              <td>Rp<?= number_format($order['total'], 0, ',', '.') ?></td>
               <td>
                 <a href="<?= site_url('admin/update_status_order/' . $order['order_id']) ?>" class="btn btn-success">Update Status Order</a>
                 <a href="<?= site_url('order/view_details/' . $order['order_id']) ?>" class="btn btn-primary">Check Order</a>
               </td>
             </tr>
           <?php endforeach; ?>
+          <tr>
+            <th colspan="4">Grand Total</th>
+            <td colspan="2">Rp<?= number_format($grand_total, 0, ',', '.') ?></td>
+          </tr>
         </tbody>
         </thead>
       </table>

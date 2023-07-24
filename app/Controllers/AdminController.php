@@ -164,9 +164,15 @@ class AdminController extends BaseController
     {
         $data = $this->staticData->get_static_data('Master Orders');
         $data['all_orders'] = $this->orderModel
+            ->select('orders.*, profiles.*')
+            ->selectSum('order_details.total', 'total')
             ->join('profiles', 'profiles.user_id = orders.user_id')
+            ->join('order_details', 'order_details.order_id = orders.order_id')
+            ->groupBy('order_details.order_id')
             ->orderBy('orders.created_at', 'asc')
             ->findAll();
+        $data['grand_total'] = $this->orderDetailModel
+            ->selectSum('total', 'total')->first()['total'];
         return view('admin/master_orders', $data);
     }
 

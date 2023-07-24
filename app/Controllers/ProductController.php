@@ -9,7 +9,7 @@ use App\Models\User;
 
 class ProductController extends BaseController
 {
-    private $userModel, $productModel, $categoryModel, $supplierModel, $userID, $staticData;
+    private $productModel, $categoryModel, $supplierModel, $userID, $staticData;
     private $page = 'Product';
     public function __construct()
     {
@@ -17,7 +17,6 @@ class ProductController extends BaseController
             $this->userID = session()->get('user_id');
         }
 
-        $this->userModel = new User();
         $this->productModel = new Product();
         $this->categoryModel = new Category();
         $this->supplierModel = new Supplier();
